@@ -16,6 +16,7 @@ t = open(os.path.join(HERE, 'template.html')).read().replace('CHALK_PNG', uri(f'
 head = ('<!doctype html>\n<html lang="en">\n<head>\n<meta charset="utf-8">\n'
         '<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">\n'
         '<meta name="description" content="Fit Forecaster finds the quietest time to train at the gym, near the time you want. Python ML models and a Flutter app.">\n'
+        '<meta name="author" content="Varshyan Suresh">\n'
         '<meta property="og:title" content="Fit Forecaster">\n'
         '<meta property="og:description" content="Find the quietest time to train, near the time you want.">\n'
         f'<meta property="og:image" content="{og_img}">\n' + og_url + '<meta name="twitter:card" content="summary_large_image">\n')

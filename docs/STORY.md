@@ -1,6 +1,6 @@
 # Two versions of Fit Forecaster
 
-Fit Forecaster started as a group college project (version 1). Version 2 is a rebuild by V.
+Fit Forecaster started as a group college project (version 1). Version 2 is a rebuild by Varshyan Suresh.
 The idea stayed the same: tell people the quietest time to train near the time they want.
 Almost everything else changed.
 

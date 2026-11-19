@@ -14,8 +14,7 @@ tells you why.
 
 ## Two versions
 
-Fit Forecaster started as a **group college project** (version 1). **Version 2** is a rebuild by
-V, working with Claude (an AI assistant) as a pair programmer.
+Fit Forecaster started as a **group college project** (version 1). **Version 2** is a rebuild by Varshyan Suresh.
 
 Version 1 reported an R² of 0.91, but the score was inflated: the models were tested on rows they
 had already learned from, and one clue included the answer. Crowd reports from users were never
@@ -88,6 +87,6 @@ Python, pandas, NumPy, scikit-learn, XGBoost, FastAPI, Streamlit, Flutter (Dart)
 ## Credits
 
 - **Version 1:** a group college project ([original repo](https://github.com/abelshinev/fit_forecaster)).
-- **Version 2:** V, with Claude as an AI pair programmer.
+- **Version 2:** rebuilt by Varshyan Suresh.
 - Fonts: Inter (SIL Open Font License), plus Rubik Spray Paint and Permanent Marker in the
   Streamlit app's street theme; licences are next to the font files.
