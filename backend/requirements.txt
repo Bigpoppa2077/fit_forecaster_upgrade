@@ -1,0 +1,19 @@
+# What Fit Forecaster actually needs to run the app and train the models
+pandas>=2.0.0
+numpy>=1.24.0
+scikit-learn>=1.3.0
+scipy>=1.10.0
+xgboost>=1.7.0
+joblib>=1.3.0
+streamlit>=1.44.0   # uses st.pills, st.segmented_control and theme.baseRadius
+plotly>=5.15.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Optional: only for the experimental LSTM / Prophet models (not used by the app)
+# tensorflow>=2.13.0
+# prophet>=1.1.0
+
+# API for the Flutter app (api/server.py)
+fastapi>=0.110
+uvicorn>=0.29

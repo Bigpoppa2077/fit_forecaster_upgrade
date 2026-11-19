@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Trained models and charts: rebuilt by `python train_and_test.py` (about a minute)
+backend/models/*/
+backend/outputs/*
+!backend/outputs/.gitkeep
+
+# Crowd reports and visit plans collected while the app runs
+backend/user_feedback/*
+!backend/user_feedback/.gitkeep
+
+# Flutter (see also app/.gitignore)
+app/.dart_tool/
+app/build/
+
+# Editors, OS, deploy
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+.vercel/
+node_modules/

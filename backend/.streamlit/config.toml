@@ -1,0 +1,20 @@
+# Fit Forecaster - iOS-style dark theme, made for phones.
+# Quiet / moderate / busy colours are set in app.py (CROWD_COLORS).
+[theme]
+base = "dark"
+primaryColor = "#0A84FF"
+backgroundColor = "#000000"
+secondaryBackgroundColor = "#1C1C1E"
+textColor = "#FFFFFF"
+font = "sans serif"
+baseRadius = "large"
+
+[client]
+toolbarMode = "minimal"
+
+[browser]
+gatherUsageStats = false
+
+[server]
+# serves static/ (the bundled Archivo font) at app/static/
+enableStaticServing = true

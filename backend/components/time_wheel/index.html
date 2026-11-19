@@ -1,0 +1,136 @@
+<!doctype html>
+<!--
+  iOS-style time wheel for Fit Forecaster (a Streamlit custom component, no build step).
+  Two wheels: hours (06-22) and minutes (00 / 30). Scroll, swipe, click or use the arrow keys.
+  It sends the chosen half-hour slot (hour*2 + 1 if :30) back to Python.
+-->
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  :root { --row: 40px; --rows: 5; }
+  html, body { margin: 0; background: transparent; overflow: hidden;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased; user-select: none; }
+  .picker { position: relative; height: calc(var(--row) * var(--rows)); display: flex; justify-content: center;
+    gap: 6px; border-radius: 30px; padding: 0 12px; box-sizing: border-box; margin: 2px;
+    /* matte: flat panel, faint hairline edge */
+    background: #141416; box-shadow: inset 0 0 0 .5px rgba(255,255,255,.07); }
+  /* the selected row: a flat soft-grey capsule, like the iOS picker */
+  .band { position: absolute; left: 10px; right: 10px; top: 50%; height: var(--row); transform: translateY(-50%);
+    background: #2C2C2E; border-radius: 999px; pointer-events: none; }
+  .col { position: relative; width: 84px; height: 100%; overflow-y: scroll; scroll-snap-type: y mandatory;
+    scrollbar-width: none; perspective: 600px; outline: none; -webkit-mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent);
+    mask-image: linear-gradient(transparent, #000 30%, #000 70%, transparent); }
+  .col::-webkit-scrollbar { display: none; }
+  .pad { height: calc(var(--row) * (var(--rows) - 1) / 2); }
+  .item { height: var(--row); line-height: var(--row); text-align: center; font-size: 24px; color: #FFFFFF;
+    font-weight: 600;
+    scroll-snap-align: center; transform-origin: center; cursor: pointer; font-variant-numeric: tabular-nums;
+    transition: color .15s; }
+  .colon { align-self: center; font-size: 24px; font-weight: 600; color: #FFFFFF; z-index: 1; padding-bottom: 2px; }
+  .col:focus-visible { box-shadow: inset 0 0 0 2px #0A84FF; border-radius: 10px; }
+
+  /* street theme: hand-drawn panel, a marker swipe for the chosen row, marker-pen numbers.
+     Colours arrive from Python (the palette) as CSS variables. */
+  @font-face { font-family: 'Marker'; src: url('permanent-marker.woff2') format('woff2'); font-display: swap; }
+  body[data-theme="street"] .picker { background: var(--w-panel); box-shadow: inset 0 0 0 1.5px var(--w-line);
+    border-radius: 24px 9px 28px 11px / 11px 26px 9px 24px; }
+  body[data-theme="street"] .band { background: var(--w-band); transform: translateY(-50%) rotate(-.8deg);
+    border-radius: 255px 18px 225px 18px / 18px 225px 18px 255px; }
+  body[data-theme="street"] .item, body[data-theme="street"] .colon {
+    font-family: 'Marker', -apple-system, sans-serif; font-weight: 400; font-size: 27px; }
+  body[data-theme="street"] .colon { color: var(--w-text); }
+</style>
+</head>
+<body>
+<div class="picker" id="picker">
+  <div class="band"></div>
+  <div class="col" id="hours" tabindex="0" aria-label="Hour"></div>
+  <div class="colon">:</div>
+  <div class="col" id="mins" tabindex="0" aria-label="Minutes"></div>
+</div>
+<script>
+// ---- tiny Streamlit component protocol (what streamlit-component-lib does) ----
+function send(type, data) { window.parent.postMessage(Object.assign({ isStreamlitMessage: true, type: type }, data), "*"); }
+const setValue = v => send("streamlit:setComponentValue", { value: v, dataType: "json" });
+const setHeight = h => send("streamlit:setFrameHeight", { height: h });
+
+const ROW = 40;
+const hoursEl = document.getElementById("hours"), minsEl = document.getElementById("mins");
+let hours = [], mins = ["00", "30"], minSlot = 12, maxSlot = 44;
+let current = null, built = false;
+
+function build(col, labels) {
+  col.innerHTML = '<div class="pad"></div>' + labels.map((l, i) => `<div class="item" data-i="${i}">${l}</div>`).join("") + '<div class="pad"></div>';
+  col.querySelectorAll(".item").forEach(it => it.addEventListener("click", () => scrollToIndex(col, +it.dataset.i, true)));
+}
+function indexOf(col) { return Math.round(col.scrollTop / ROW); }
+function scrollToIndex(col, i, smooth) { col.scrollTo({ top: i * ROW, behavior: smooth ? "smooth" : "auto" }); }
+
+// 3D drum effect: rows tilt and fade the further they are from the middle
+function paint(col) {
+  const mid = col.scrollTop + col.clientHeight / 2;
+  col.querySelectorAll(".item").forEach(it => {
+    const d = (it.offsetTop + ROW / 2 - mid) / ROW;          // distance in rows
+    const a = Math.max(-75, Math.min(75, d * 20));
+    it.style.transform = `rotateX(${-a}deg) scale(${1 - Math.min(Math.abs(d), 3) * 0.04})`;
+    it.style.color = Math.abs(d) < 0.5 ? "var(--w-text, #FFFFFF)" : "var(--w-dim, rgba(235,235,245,.45))";
+  });
+}
+
+function slotFromWheels() {
+  const h = hours[Math.min(indexOf(hoursEl), hours.length - 1)];
+  const m = indexOf(minsEl);
+  let slot = parseInt(h, 10) * 2 + (m === 1 ? 1 : 0);
+  return Math.max(minSlot, Math.min(maxSlot, slot));
+}
+function showSlot(slot, smooth) {
+  const h = Math.floor(slot / 2), m = slot % 2;
+  scrollToIndex(hoursEl, hours.indexOf(String(h).padStart(2, "0")), smooth);
+  scrollToIndex(minsEl, m, smooth);
+}
+
+// When scrolling stops: read the wheels, fix impossible times (e.g. 22:30), report the slot
+function onSettle() {
+  let slot = slotFromWheels();
+  const wanted = parseInt(hours[indexOf(hoursEl)] || "0", 10) * 2 + indexOf(minsEl);
+  if (wanted !== slot) showSlot(slot, true);                 // snap back inside opening hours
+  if (slot !== current) { current = slot; setValue(slot); }
+}
+[hoursEl, minsEl].forEach(col => {
+  let t;
+  col.addEventListener("scroll", () => { paint(col); clearTimeout(t); t = setTimeout(onSettle, 140); }, { passive: true });
+  col.addEventListener("keydown", e => {
+    if (e.key === "ArrowDown" || e.key === "ArrowUp") {
+      e.preventDefault();
+      scrollToIndex(col, indexOf(col) + (e.key === "ArrowDown" ? 1 : -1), true);
+    }
+  });
+});
+
+window.addEventListener("message", e => {
+  if (!e.data || e.data.type !== "streamlit:render") return;
+  const args = e.data.args || {};
+  minSlot = args.min_slot ?? 12; maxSlot = args.max_slot ?? 44;
+  document.body.dataset.theme = args.theme || "clean";
+  if (args.theme === "street" && args.colors) {
+    for (const [k, v] of Object.entries(args.colors)) document.body.style.setProperty("--w-" + k, v);
+  }
+  if (!built) {
+    hours = [];
+    for (let h = Math.floor(minSlot / 2); h <= Math.floor(maxSlot / 2); h++) hours.push(String(h).padStart(2, "0"));
+    build(hoursEl, hours); build(minsEl, mins);
+    built = true;
+    current = args.value;
+    showSlot(args.value, false);
+    paint(hoursEl); paint(minsEl);
+    setHeight(document.getElementById("picker").offsetHeight + 4);
+  }
+  // After that the wheel is in charge: later renders don't move it, so it can't jump back
+  // to an older time while Python catches up. (Going Back re-creates the wheel at the saved time.)
+});
+send("streamlit:componentReady", { apiVersion: 1 });
+</script>
+</body>
+</html>

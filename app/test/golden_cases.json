@@ -1,0 +1,2276 @@
+[
+{
+"weekday": "Friday",
+"split": "Legs",
+"pref": 14,
+"best": 12,
+"level": "Quiet",
+"peak_slot": 35,
+"titles": [
+"1 fewer person than 07:00",
+"1 h earlier than you picked",
+"Quiet for legs today",
+"Past Fridays at 06:00"
+]
+},
+{
+"weekday": "Friday",
+"split": "Legs",
+"pref": 24,
+"best": 25,
+"level": "Moderate",
+"peak_slot": 35,
+"titles": [
+"2 fewer people than 12:00",
+"30 min later than you picked",
+"Moderate for legs today",
+"Past Fridays at 12:30"
+]
+},
+{
+"weekday": "Friday",
+"split": "Legs",
+"pref": 33,
+"best": 30,
+"level": "Moderate",
+"peak_slot": 35,
+"titles": [
+"2 fewer people than 16:30",
+"1 h 30 min earlier than you picked",
+"Moderate for legs today",
+"Past Fridays at 15:00"
+]
+},
+{
+"weekday": "Friday",
+"split": "Legs",
+"pref": 37,
+"best": 40,
+"level": "Moderate",
+"peak_slot": 35,
+"titles": [
+"2 fewer people than 18:30",
+"1 h 30 min later than you picked",
+"Moderate for legs today",
+"Past Fridays at 20:00"
+]
+},
+{
+"weekday": "Friday",
+"split": "Legs",
+"pref": 39,
+"best": 42,
+"level": "Quiet",
+"peak_slot": 35,
+"titles": [
+"3 fewer people than 19:30",
+"1 h 30 min later than you picked",
+"Quiet for legs today",
+"Past Fridays at 21:00"
+]
+},
+{
+"weekday": "Friday",
+"split": "Legs",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 35,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for legs today",
+"Past Fridays at 22:00"
+]
+},
+{
+"weekday": "Friday",
+"split": "Chest",
+"pref": 14,
+"best": 12,
+"level": "Quiet",
+"peak_slot": 26,
+"titles": [
+"1 fewer person than 07:00",
+"1 h earlier than you picked",
+"Quiet for chest today",
+"Past Fridays at 06:00"
+]
+},
+{
+"weekday": "Friday",
+"split": "Chest",
+"pref": 24,
+"best": 24,
+"level": "Moderate",
+"peak_slot": 26,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for chest today",
+"Past Fridays at 12:00"
+]
+},
+{
+"weekday": "Friday",
+"split": "Chest",
+"pref": 33,
+"best": 33,
+"level": "Moderate",
+"peak_slot": 26,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for chest today",
+"Past Fridays at 16:30"
+]
+},
+{
+"weekday": "Friday",
+"split": "Chest",
+"pref": 37,
+"best": 37,
+"level": "Moderate",
+"peak_slot": 26,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for chest today",
+"Past Fridays at 18:30"
+]
+},
+{
+"weekday": "Friday",
+"split": "Chest",
+"pref": 39,
+"best": 42,
+"level": "Quiet",
+"peak_slot": 26,
+"titles": [
+"4 fewer people than 19:30",
+"1 h 30 min later than you picked",
+"Quiet for chest today",
+"Past Fridays at 21:00"
+]
+},
+{
+"weekday": "Friday",
+"split": "Chest",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 26,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for chest today",
+"Past Fridays at 22:00"
+]
+},
+{
+"weekday": "Friday",
+"split": "Arms",
+"pref": 14,
+"best": 14,
+"level": "Quiet",
+"peak_slot": 19,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for arms today",
+"Past Fridays at 07:00"
+]
+},
+{
+"weekday": "Friday",
+"split": "Arms",
+"pref": 24,
+"best": 22,
+"level": "Moderate",
+"peak_slot": 19,
+"titles": [
+"1 fewer person than 12:00",
+"1 h earlier than you picked",
+"Moderate for arms today",
+"Past Fridays at 11:00"
+]
+},
+{
+"weekday": "Friday",
+"split": "Arms",
+"pref": 33,
+"best": 33,
+"level": "Moderate",
+"peak_slot": 19,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for arms today",
+"Past Fridays at 16:30"
+]
+},
+{
+"weekday": "Friday",
+"split": "Arms",
+"pref": 37,
+"best": 37,
+"level": "Moderate",
+"peak_slot": 19,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for arms today",
+"Past Fridays at 18:30"
+]
+},
+{
+"weekday": "Friday",
+"split": "Arms",
+"pref": 39,
+"best": 39,
+"level": "Busy",
+"peak_slot": 19,
+"titles": [
+"Nothing nearby is quieter",
+"Busy for arms today",
+"Past Fridays at 19:30"
+]
+},
+{
+"weekday": "Friday",
+"split": "Arms",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 19,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for arms today",
+"Past Fridays at 22:00"
+]
+},
+{
+"weekday": "Friday",
+"split": "Cardio",
+"pref": 14,
+"best": 14,
+"level": "Quiet",
+"peak_slot": 38,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for cardio today",
+"Past Fridays at 07:00"
+]
+},
+{
+"weekday": "Friday",
+"split": "Cardio",
+"pref": 24,
+"best": 25,
+"level": "Moderate",
+"peak_slot": 38,
+"titles": [
+"1 fewer person than 12:00",
+"30 min later than you picked",
+"Moderate for cardio today",
+"Past Fridays at 12:30"
+]
+},
+{
+"weekday": "Friday",
+"split": "Cardio",
+"pref": 33,
+"best": 33,
+"level": "Moderate",
+"peak_slot": 38,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for cardio today",
+"Past Fridays at 16:30"
+]
+},
+{
+"weekday": "Friday",
+"split": "Cardio",
+"pref": 37,
+"best": 34,
+"level": "Moderate",
+"peak_slot": 38,
+"titles": [
+"2 fewer people than 18:30",
+"1 h 30 min earlier than you picked",
+"Moderate for cardio today",
+"Past Fridays at 17:00"
+]
+},
+{
+"weekday": "Friday",
+"split": "Cardio",
+"pref": 39,
+"best": 42,
+"level": "Moderate",
+"peak_slot": 38,
+"titles": [
+"3 fewer people than 19:30",
+"1 h 30 min later than you picked",
+"Moderate for cardio today",
+"Past Fridays at 21:00"
+]
+},
+{
+"weekday": "Friday",
+"split": "Cardio",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 38,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for cardio today",
+"Past Fridays at 22:00"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Legs",
+"pref": 14,
+"best": 12,
+"level": "Quiet",
+"peak_slot": 19,
+"titles": [
+"1 fewer person than 07:00",
+"1 h earlier than you picked",
+"Quiet for legs today",
+"Past Saturdays at 06:00"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Legs",
+"pref": 24,
+"best": 27,
+"level": "Moderate",
+"peak_slot": 19,
+"titles": [
+"2 fewer people than 12:00",
+"1 h 30 min later than you picked",
+"Moderate for legs today",
+"Past Saturdays at 13:30"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Legs",
+"pref": 33,
+"best": 32,
+"level": "Moderate",
+"peak_slot": 19,
+"titles": [
+"3 fewer people than 16:30",
+"30 min earlier than you picked",
+"Moderate for legs today",
+"Past Saturdays at 16:00"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Legs",
+"pref": 37,
+"best": 39,
+"level": "Moderate",
+"peak_slot": 19,
+"titles": [
+"2 fewer people than 18:30",
+"1 h later than you picked",
+"Moderate for legs today",
+"Past Saturdays at 19:30"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Legs",
+"pref": 39,
+"best": 42,
+"level": "Quiet",
+"peak_slot": 19,
+"titles": [
+"2 fewer people than 19:30",
+"1 h 30 min later than you picked",
+"Quiet for legs today",
+"Past Saturdays at 21:00"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Legs",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 19,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for legs today",
+"Past Saturdays at 22:00"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Chest",
+"pref": 14,
+"best": 13,
+"level": "Quiet",
+"peak_slot": 21,
+"titles": [
+"1 fewer person than 07:00",
+"30 min earlier than you picked",
+"Quiet for chest today",
+"Past Saturdays at 06:30"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Chest",
+"pref": 24,
+"best": 24,
+"level": "Busy",
+"peak_slot": 21,
+"titles": [
+"Nothing nearby is quieter",
+"Busy for chest today",
+"Past Saturdays at 12:00"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Chest",
+"pref": 33,
+"best": 33,
+"level": "Busy",
+"peak_slot": 21,
+"titles": [
+"Nothing nearby is quieter",
+"Busy for chest today",
+"Past Saturdays at 16:30"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Chest",
+"pref": 37,
+"best": 37,
+"level": "Busy",
+"peak_slot": 21,
+"titles": [
+"Nothing nearby is quieter",
+"Busy for chest today",
+"Past Saturdays at 18:30"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Chest",
+"pref": 39,
+"best": 42,
+"level": "Quiet",
+"peak_slot": 21,
+"titles": [
+"3 fewer people than 19:30",
+"1 h 30 min later than you picked",
+"Quiet for chest today",
+"Past Saturdays at 21:00"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Chest",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 21,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for chest today",
+"Past Saturdays at 22:00"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Arms",
+"pref": 14,
+"best": 14,
+"level": "Quiet",
+"peak_slot": 28,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for arms today",
+"Past Saturdays at 07:00"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Arms",
+"pref": 24,
+"best": 25,
+"level": "Moderate",
+"peak_slot": 28,
+"titles": [
+"1 fewer person than 12:00",
+"30 min later than you picked",
+"Moderate for arms today",
+"Past Saturdays at 12:30"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Arms",
+"pref": 33,
+"best": 33,
+"level": "Moderate",
+"peak_slot": 28,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for arms today",
+"Past Saturdays at 16:30"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Arms",
+"pref": 37,
+"best": 37,
+"level": "Moderate",
+"peak_slot": 28,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for arms today",
+"Past Saturdays at 18:30"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Arms",
+"pref": 39,
+"best": 36,
+"level": "Moderate",
+"peak_slot": 28,
+"titles": [
+"2 fewer people than 19:30",
+"1 h 30 min earlier than you picked",
+"Moderate for arms today",
+"Past Saturdays at 18:00"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Arms",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 28,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for arms today",
+"Past Saturdays at 22:00"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Cardio",
+"pref": 14,
+"best": 14,
+"level": "Quiet",
+"peak_slot": 38,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for cardio today",
+"Past Saturdays at 07:00"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Cardio",
+"pref": 24,
+"best": 27,
+"level": "Moderate",
+"peak_slot": 38,
+"titles": [
+"2 fewer people than 12:00",
+"1 h 30 min later than you picked",
+"Moderate for cardio today",
+"Past Saturdays at 13:30"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Cardio",
+"pref": 33,
+"best": 31,
+"level": "Moderate",
+"peak_slot": 38,
+"titles": [
+"2 fewer people than 16:30",
+"1 h earlier than you picked",
+"Moderate for cardio today",
+"Past Saturdays at 15:30"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Cardio",
+"pref": 37,
+"best": 39,
+"level": "Moderate",
+"peak_slot": 38,
+"titles": [
+"1 fewer person than 18:30",
+"1 h later than you picked",
+"Moderate for cardio today",
+"Past Saturdays at 19:30"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Cardio",
+"pref": 39,
+"best": 41,
+"level": "Moderate",
+"peak_slot": 38,
+"titles": [
+"2 fewer people than 19:30",
+"1 h later than you picked",
+"Moderate for cardio today",
+"Past Saturdays at 20:30"
+]
+},
+{
+"weekday": "Saturday",
+"split": "Cardio",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 38,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for cardio today",
+"Past Saturdays at 22:00"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Legs",
+"pref": 14,
+"best": 14,
+"level": "Quiet",
+"peak_slot": 33,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for legs today",
+"Past Sundays at 07:00"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Legs",
+"pref": 24,
+"best": 24,
+"level": "Moderate",
+"peak_slot": 33,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for legs today",
+"Past Sundays at 12:00"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Legs",
+"pref": 33,
+"best": 30,
+"level": "Moderate",
+"peak_slot": 33,
+"titles": [
+"4 fewer people than 16:30",
+"1 h 30 min earlier than you picked",
+"Moderate for legs today",
+"Past Sundays at 15:00"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Legs",
+"pref": 37,
+"best": 40,
+"level": "Moderate",
+"peak_slot": 33,
+"titles": [
+"2 fewer people than 18:30",
+"1 h 30 min later than you picked",
+"Moderate for legs today",
+"Past Sundays at 20:00"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Legs",
+"pref": 39,
+"best": 42,
+"level": "Quiet",
+"peak_slot": 33,
+"titles": [
+"5 fewer people than 19:30",
+"1 h 30 min later than you picked",
+"Quiet for legs today",
+"Past Sundays at 21:00"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Legs",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 33,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for legs today",
+"Past Sundays at 22:00"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Chest",
+"pref": 14,
+"best": 13,
+"level": "Quiet",
+"peak_slot": 18,
+"titles": [
+"1 fewer person than 07:00",
+"30 min earlier than you picked",
+"Quiet for chest today",
+"Past Sundays at 06:30"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Chest",
+"pref": 24,
+"best": 24,
+"level": "Moderate",
+"peak_slot": 18,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for chest today",
+"Past Sundays at 12:00"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Chest",
+"pref": 33,
+"best": 33,
+"level": "Busy",
+"peak_slot": 18,
+"titles": [
+"Nothing nearby is quieter",
+"Busy for chest today",
+"Past Sundays at 16:30"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Chest",
+"pref": 37,
+"best": 37,
+"level": "Moderate",
+"peak_slot": 18,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for chest today",
+"Past Sundays at 18:30"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Chest",
+"pref": 39,
+"best": 42,
+"level": "Quiet",
+"peak_slot": 18,
+"titles": [
+"3 fewer people than 19:30",
+"1 h 30 min later than you picked",
+"Quiet for chest today",
+"Past Sundays at 21:00"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Chest",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 18,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for chest today",
+"Past Sundays at 22:00"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Arms",
+"pref": 14,
+"best": 14,
+"level": "Quiet",
+"peak_slot": 41,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for arms today",
+"Past Sundays at 07:00"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Arms",
+"pref": 24,
+"best": 25,
+"level": "Quiet",
+"peak_slot": 41,
+"titles": [
+"1 fewer person than 12:00",
+"30 min later than you picked",
+"Quiet for arms today",
+"Past Sundays at 12:30"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Arms",
+"pref": 33,
+"best": 33,
+"level": "Moderate",
+"peak_slot": 41,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for arms today",
+"Past Sundays at 16:30"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Arms",
+"pref": 37,
+"best": 36,
+"level": "Moderate",
+"peak_slot": 41,
+"titles": [
+"1 fewer person than 18:30",
+"30 min earlier than you picked",
+"Moderate for arms today",
+"Past Sundays at 18:00"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Arms",
+"pref": 39,
+"best": 42,
+"level": "Moderate",
+"peak_slot": 41,
+"titles": [
+"1 fewer person than 19:30",
+"1 h 30 min later than you picked",
+"Moderate for arms today",
+"Past Sundays at 21:00"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Arms",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 41,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for arms today",
+"Past Sundays at 22:00"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Cardio",
+"pref": 14,
+"best": 14,
+"level": "Quiet",
+"peak_slot": 36,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for cardio today",
+"Past Sundays at 07:00"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Cardio",
+"pref": 24,
+"best": 27,
+"level": "Moderate",
+"peak_slot": 36,
+"titles": [
+"1 fewer person than 12:00",
+"1 h 30 min later than you picked",
+"Moderate for cardio today",
+"Past Sundays at 13:30"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Cardio",
+"pref": 33,
+"best": 30,
+"level": "Moderate",
+"peak_slot": 36,
+"titles": [
+"3 fewer people than 16:30",
+"1 h 30 min earlier than you picked",
+"Moderate for cardio today",
+"Past Sundays at 15:00"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Cardio",
+"pref": 37,
+"best": 37,
+"level": "Moderate",
+"peak_slot": 36,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for cardio today",
+"Past Sundays at 18:30"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Cardio",
+"pref": 39,
+"best": 42,
+"level": "Quiet",
+"peak_slot": 36,
+"titles": [
+"2 fewer people than 19:30",
+"1 h 30 min later than you picked",
+"Quiet for cardio today",
+"Past Sundays at 21:00"
+]
+},
+{
+"weekday": "Sunday",
+"split": "Cardio",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 36,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for cardio today",
+"Past Sundays at 22:00"
+]
+},
+{
+"weekday": "Monday",
+"split": "Legs",
+"pref": 14,
+"best": 14,
+"level": "Quiet",
+"peak_slot": 34,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for legs today",
+"Past Mondays at 07:00"
+]
+},
+{
+"weekday": "Monday",
+"split": "Legs",
+"pref": 24,
+"best": 26,
+"level": "Moderate",
+"peak_slot": 34,
+"titles": [
+"1 fewer person than 12:00",
+"1 h later than you picked",
+"Moderate for legs today",
+"Past Mondays at 13:00"
+]
+},
+{
+"weekday": "Monday",
+"split": "Legs",
+"pref": 33,
+"best": 31,
+"level": "Moderate",
+"peak_slot": 34,
+"titles": [
+"3 fewer people than 16:30",
+"1 h earlier than you picked",
+"Moderate for legs today",
+"Past Mondays at 15:30"
+]
+},
+{
+"weekday": "Monday",
+"split": "Legs",
+"pref": 37,
+"best": 40,
+"level": "Quiet",
+"peak_slot": 34,
+"titles": [
+"3 fewer people than 18:30",
+"1 h 30 min later than you picked",
+"Quiet for legs today",
+"Past Mondays at 20:00"
+]
+},
+{
+"weekday": "Monday",
+"split": "Legs",
+"pref": 39,
+"best": 42,
+"level": "Quiet",
+"peak_slot": 34,
+"titles": [
+"2 fewer people than 19:30",
+"1 h 30 min later than you picked",
+"Quiet for legs today",
+"Past Mondays at 21:00"
+]
+},
+{
+"weekday": "Monday",
+"split": "Legs",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 34,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for legs today",
+"Past Mondays at 22:00"
+]
+},
+{
+"weekday": "Monday",
+"split": "Chest",
+"pref": 14,
+"best": 13,
+"level": "Quiet",
+"peak_slot": 27,
+"titles": [
+"1 fewer person than 07:00",
+"30 min earlier than you picked",
+"Quiet for chest today",
+"Past Mondays at 06:30"
+]
+},
+{
+"weekday": "Monday",
+"split": "Chest",
+"pref": 24,
+"best": 24,
+"level": "Moderate",
+"peak_slot": 27,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for chest today",
+"Past Mondays at 12:00"
+]
+},
+{
+"weekday": "Monday",
+"split": "Chest",
+"pref": 33,
+"best": 35,
+"level": "Busy",
+"peak_slot": 27,
+"titles": [
+"1 fewer person than 16:30",
+"1 h later than you picked",
+"Busy for chest today",
+"Past Mondays at 17:30"
+]
+},
+{
+"weekday": "Monday",
+"split": "Chest",
+"pref": 37,
+"best": 37,
+"level": "Busy",
+"peak_slot": 27,
+"titles": [
+"Nothing nearby is quieter",
+"Busy for chest today",
+"Past Mondays at 18:30"
+]
+},
+{
+"weekday": "Monday",
+"split": "Chest",
+"pref": 39,
+"best": 42,
+"level": "Quiet",
+"peak_slot": 27,
+"titles": [
+"3 fewer people than 19:30",
+"1 h 30 min later than you picked",
+"Quiet for chest today",
+"Past Mondays at 21:00"
+]
+},
+{
+"weekday": "Monday",
+"split": "Chest",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 27,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for chest today",
+"Past Mondays at 22:00"
+]
+},
+{
+"weekday": "Monday",
+"split": "Arms",
+"pref": 14,
+"best": 14,
+"level": "Quiet",
+"peak_slot": 35,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for arms today",
+"Past Mondays at 07:00"
+]
+},
+{
+"weekday": "Monday",
+"split": "Arms",
+"pref": 24,
+"best": 25,
+"level": "Moderate",
+"peak_slot": 35,
+"titles": [
+"1 fewer person than 12:00",
+"30 min later than you picked",
+"Moderate for arms today",
+"Past Mondays at 12:30"
+]
+},
+{
+"weekday": "Monday",
+"split": "Arms",
+"pref": 33,
+"best": 30,
+"level": "Moderate",
+"peak_slot": 35,
+"titles": [
+"1 fewer person than 16:30",
+"1 h 30 min earlier than you picked",
+"Moderate for arms today",
+"Past Mondays at 15:00"
+]
+},
+{
+"weekday": "Monday",
+"split": "Arms",
+"pref": 37,
+"best": 38,
+"level": "Moderate",
+"peak_slot": 35,
+"titles": [
+"2 fewer people than 18:30",
+"30 min later than you picked",
+"Moderate for arms today",
+"Past Mondays at 19:00"
+]
+},
+{
+"weekday": "Monday",
+"split": "Arms",
+"pref": 39,
+"best": 41,
+"level": "Moderate",
+"peak_slot": 35,
+"titles": [
+"1 fewer person than 19:30",
+"1 h later than you picked",
+"Moderate for arms today",
+"Past Mondays at 20:30"
+]
+},
+{
+"weekday": "Monday",
+"split": "Arms",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 35,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for arms today",
+"Past Mondays at 22:00"
+]
+},
+{
+"weekday": "Monday",
+"split": "Cardio",
+"pref": 14,
+"best": 14,
+"level": "Quiet",
+"peak_slot": 39,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for cardio today",
+"Past Mondays at 07:00"
+]
+},
+{
+"weekday": "Monday",
+"split": "Cardio",
+"pref": 24,
+"best": 25,
+"level": "Moderate",
+"peak_slot": 39,
+"titles": [
+"3 fewer people than 12:00",
+"30 min later than you picked",
+"Moderate for cardio today",
+"Past Mondays at 12:30"
+]
+},
+{
+"weekday": "Monday",
+"split": "Cardio",
+"pref": 33,
+"best": 30,
+"level": "Moderate",
+"peak_slot": 39,
+"titles": [
+"1 fewer person than 16:30",
+"1 h 30 min earlier than you picked",
+"Moderate for cardio today",
+"Past Mondays at 15:00"
+]
+},
+{
+"weekday": "Monday",
+"split": "Cardio",
+"pref": 37,
+"best": 37,
+"level": "Moderate",
+"peak_slot": 39,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for cardio today",
+"Past Mondays at 18:30"
+]
+},
+{
+"weekday": "Monday",
+"split": "Cardio",
+"pref": 39,
+"best": 42,
+"level": "Moderate",
+"peak_slot": 39,
+"titles": [
+"4 fewer people than 19:30",
+"1 h 30 min later than you picked",
+"Moderate for cardio today",
+"Past Mondays at 21:00"
+]
+},
+{
+"weekday": "Monday",
+"split": "Cardio",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 39,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for cardio today",
+"Past Mondays at 22:00"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Legs",
+"pref": 14,
+"best": 14,
+"level": "Quiet",
+"peak_slot": 20,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for legs today",
+"Past Tuesdays at 07:00"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Legs",
+"pref": 24,
+"best": 25,
+"level": "Moderate",
+"peak_slot": 20,
+"titles": [
+"1 fewer person than 12:00",
+"30 min later than you picked",
+"Moderate for legs today",
+"Past Tuesdays at 12:30"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Legs",
+"pref": 33,
+"best": 30,
+"level": "Moderate",
+"peak_slot": 20,
+"titles": [
+"1 fewer person than 16:30",
+"1 h 30 min earlier than you picked",
+"Moderate for legs today",
+"Past Tuesdays at 15:00"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Legs",
+"pref": 37,
+"best": 40,
+"level": "Moderate",
+"peak_slot": 20,
+"titles": [
+"1 fewer person than 18:30",
+"1 h 30 min later than you picked",
+"Moderate for legs today",
+"Past Tuesdays at 20:00"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Legs",
+"pref": 39,
+"best": 42,
+"level": "Quiet",
+"peak_slot": 20,
+"titles": [
+"1 fewer person than 19:30",
+"1 h 30 min later than you picked",
+"Quiet for legs today",
+"Past Tuesdays at 21:00"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Legs",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 20,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for legs today",
+"Past Tuesdays at 22:00"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Chest",
+"pref": 14,
+"best": 13,
+"level": "Quiet",
+"peak_slot": 28,
+"titles": [
+"1 fewer person than 07:00",
+"30 min earlier than you picked",
+"Quiet for chest today",
+"Past Tuesdays at 06:30"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Chest",
+"pref": 24,
+"best": 24,
+"level": "Busy",
+"peak_slot": 28,
+"titles": [
+"Nothing nearby is quieter",
+"Busy for chest today",
+"Past Tuesdays at 12:00"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Chest",
+"pref": 33,
+"best": 31,
+"level": "Busy",
+"peak_slot": 28,
+"titles": [
+"1 fewer person than 16:30",
+"1 h earlier than you picked",
+"Busy for chest today",
+"Past Tuesdays at 15:30"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Chest",
+"pref": 37,
+"best": 40,
+"level": "Moderate",
+"peak_slot": 28,
+"titles": [
+"1 fewer person than 18:30",
+"1 h 30 min later than you picked",
+"Moderate for chest today",
+"Past Tuesdays at 20:00"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Chest",
+"pref": 39,
+"best": 42,
+"level": "Quiet",
+"peak_slot": 28,
+"titles": [
+"2 fewer people than 19:30",
+"1 h 30 min later than you picked",
+"Quiet for chest today",
+"Past Tuesdays at 21:00"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Chest",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 28,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for chest today",
+"Past Tuesdays at 22:00"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Arms",
+"pref": 14,
+"best": 14,
+"level": "Quiet",
+"peak_slot": 35,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for arms today",
+"Past Tuesdays at 07:00"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Arms",
+"pref": 24,
+"best": 26,
+"level": "Moderate",
+"peak_slot": 35,
+"titles": [
+"1 fewer person than 12:00",
+"1 h later than you picked",
+"Moderate for arms today",
+"Past Tuesdays at 13:00"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Arms",
+"pref": 33,
+"best": 30,
+"level": "Moderate",
+"peak_slot": 35,
+"titles": [
+"1 fewer person than 16:30",
+"1 h 30 min earlier than you picked",
+"Moderate for arms today",
+"Past Tuesdays at 15:00"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Arms",
+"pref": 37,
+"best": 38,
+"level": "Moderate",
+"peak_slot": 35,
+"titles": [
+"1 fewer person than 18:30",
+"30 min later than you picked",
+"Moderate for arms today",
+"Past Tuesdays at 19:00"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Arms",
+"pref": 39,
+"best": 41,
+"level": "Moderate",
+"peak_slot": 35,
+"titles": [
+"2 fewer people than 19:30",
+"1 h later than you picked",
+"Moderate for arms today",
+"Past Tuesdays at 20:30"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Arms",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 35,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for arms today",
+"Past Tuesdays at 22:00"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Cardio",
+"pref": 14,
+"best": 13,
+"level": "Quiet",
+"peak_slot": 39,
+"titles": [
+"2 fewer people than 07:00",
+"30 min earlier than you picked",
+"Quiet for cardio today",
+"Past Tuesdays at 06:30"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Cardio",
+"pref": 24,
+"best": 24,
+"level": "Busy",
+"peak_slot": 39,
+"titles": [
+"Nothing nearby is quieter",
+"Busy for cardio today",
+"Past Tuesdays at 12:00"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Cardio",
+"pref": 33,
+"best": 30,
+"level": "Busy",
+"peak_slot": 39,
+"titles": [
+"1 fewer person than 16:30",
+"1 h 30 min earlier than you picked",
+"Busy for cardio today",
+"Past Tuesdays at 15:00"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Cardio",
+"pref": 37,
+"best": 36,
+"level": "Busy",
+"peak_slot": 39,
+"titles": [
+"1 fewer person than 18:30",
+"30 min earlier than you picked",
+"Busy for cardio today",
+"Past Tuesdays at 18:00"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Cardio",
+"pref": 39,
+"best": 42,
+"level": "Moderate",
+"peak_slot": 39,
+"titles": [
+"6 fewer people than 19:30",
+"1 h 30 min later than you picked",
+"Moderate for cardio today",
+"Past Tuesdays at 21:00"
+]
+},
+{
+"weekday": "Tuesday",
+"split": "Cardio",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 39,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for cardio today",
+"Past Tuesdays at 22:00"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Legs",
+"pref": 14,
+"best": 14,
+"level": "Quiet",
+"peak_slot": 18,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for legs today",
+"Past Wednesdays at 07:00"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Legs",
+"pref": 24,
+"best": 23,
+"level": "Moderate",
+"peak_slot": 18,
+"titles": [
+"1 fewer person than 12:00",
+"30 min earlier than you picked",
+"Moderate for legs today",
+"Past Wednesdays at 11:30"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Legs",
+"pref": 33,
+"best": 36,
+"level": "Moderate",
+"peak_slot": 18,
+"titles": [
+"2 fewer people than 16:30",
+"1 h 30 min later than you picked",
+"Moderate for legs today",
+"Past Wednesdays at 18:00"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Legs",
+"pref": 37,
+"best": 40,
+"level": "Quiet",
+"peak_slot": 18,
+"titles": [
+"2 fewer people than 18:30",
+"1 h 30 min later than you picked",
+"Quiet for legs today",
+"Past Wednesdays at 20:00"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Legs",
+"pref": 39,
+"best": 42,
+"level": "Quiet",
+"peak_slot": 18,
+"titles": [
+"2 fewer people than 19:30",
+"1 h 30 min later than you picked",
+"Quiet for legs today",
+"Past Wednesdays at 21:00"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Legs",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 18,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for legs today",
+"Past Wednesdays at 22:00"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Chest",
+"pref": 14,
+"best": 13,
+"level": "Quiet",
+"peak_slot": 28,
+"titles": [
+"1 fewer person than 07:00",
+"30 min earlier than you picked",
+"Quiet for chest today",
+"Past Wednesdays at 06:30"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Chest",
+"pref": 24,
+"best": 24,
+"level": "Moderate",
+"peak_slot": 28,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for chest today",
+"Past Wednesdays at 12:00"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Chest",
+"pref": 33,
+"best": 31,
+"level": "Busy",
+"peak_slot": 28,
+"titles": [
+"1 fewer person than 16:30",
+"1 h earlier than you picked",
+"Busy for chest today",
+"Past Wednesdays at 15:30"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Chest",
+"pref": 37,
+"best": 37,
+"level": "Busy",
+"peak_slot": 28,
+"titles": [
+"Nothing nearby is quieter",
+"Busy for chest today",
+"Past Wednesdays at 18:30"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Chest",
+"pref": 39,
+"best": 42,
+"level": "Quiet",
+"peak_slot": 28,
+"titles": [
+"3 fewer people than 19:30",
+"1 h 30 min later than you picked",
+"Quiet for chest today",
+"Past Wednesdays at 21:00"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Chest",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 28,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for chest today",
+"Past Wednesdays at 22:00"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Arms",
+"pref": 14,
+"best": 14,
+"level": "Quiet",
+"peak_slot": 21,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for arms today",
+"Past Wednesdays at 07:00"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Arms",
+"pref": 24,
+"best": 26,
+"level": "Moderate",
+"peak_slot": 21,
+"titles": [
+"1 fewer person than 12:00",
+"1 h later than you picked",
+"Moderate for arms today",
+"Past Wednesdays at 13:00"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Arms",
+"pref": 33,
+"best": 33,
+"level": "Quiet",
+"peak_slot": 21,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for arms today",
+"Past Wednesdays at 16:30"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Arms",
+"pref": 37,
+"best": 37,
+"level": "Quiet",
+"peak_slot": 21,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for arms today",
+"Past Wednesdays at 18:30"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Arms",
+"pref": 39,
+"best": 39,
+"level": "Moderate",
+"peak_slot": 21,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for arms today",
+"Past Wednesdays at 19:30"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Arms",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 21,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for arms today",
+"Past Wednesdays at 22:00"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Cardio",
+"pref": 14,
+"best": 13,
+"level": "Quiet",
+"peak_slot": 38,
+"titles": [
+"1 fewer person than 07:00",
+"30 min earlier than you picked",
+"Quiet for cardio today",
+"Past Wednesdays at 06:30"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Cardio",
+"pref": 24,
+"best": 24,
+"level": "Moderate",
+"peak_slot": 38,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for cardio today",
+"Past Wednesdays at 12:00"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Cardio",
+"pref": 33,
+"best": 33,
+"level": "Moderate",
+"peak_slot": 38,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for cardio today",
+"Past Wednesdays at 16:30"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Cardio",
+"pref": 37,
+"best": 36,
+"level": "Moderate",
+"peak_slot": 38,
+"titles": [
+"1 fewer person than 18:30",
+"30 min earlier than you picked",
+"Moderate for cardio today",
+"Past Wednesdays at 18:00"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Cardio",
+"pref": 39,
+"best": 42,
+"level": "Moderate",
+"peak_slot": 38,
+"titles": [
+"3 fewer people than 19:30",
+"1 h 30 min later than you picked",
+"Moderate for cardio today",
+"Past Wednesdays at 21:00"
+]
+},
+{
+"weekday": "Wednesday",
+"split": "Cardio",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 38,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for cardio today",
+"Past Wednesdays at 22:00"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Legs",
+"pref": 14,
+"best": 13,
+"level": "Quiet",
+"peak_slot": 20,
+"titles": [
+"1 fewer person than 07:00",
+"30 min earlier than you picked",
+"Quiet for legs today",
+"Past Thursdays at 06:30"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Legs",
+"pref": 24,
+"best": 27,
+"level": "Moderate",
+"peak_slot": 20,
+"titles": [
+"1 fewer person than 12:00",
+"1 h 30 min later than you picked",
+"Moderate for legs today",
+"Past Thursdays at 13:30"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Legs",
+"pref": 33,
+"best": 30,
+"level": "Moderate",
+"peak_slot": 20,
+"titles": [
+"1 fewer person than 16:30",
+"1 h 30 min earlier than you picked",
+"Moderate for legs today",
+"Past Thursdays at 15:00"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Legs",
+"pref": 37,
+"best": 40,
+"level": "Moderate",
+"peak_slot": 20,
+"titles": [
+"2 fewer people than 18:30",
+"1 h 30 min later than you picked",
+"Moderate for legs today",
+"Past Thursdays at 20:00"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Legs",
+"pref": 39,
+"best": 42,
+"level": "Quiet",
+"peak_slot": 20,
+"titles": [
+"4 fewer people than 19:30",
+"1 h 30 min later than you picked",
+"Quiet for legs today",
+"Past Thursdays at 21:00"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Legs",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 20,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for legs today",
+"Past Thursdays at 22:00"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Chest",
+"pref": 14,
+"best": 13,
+"level": "Quiet",
+"peak_slot": 18,
+"titles": [
+"1 fewer person than 07:00",
+"30 min earlier than you picked",
+"Quiet for chest today",
+"Past Thursdays at 06:30"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Chest",
+"pref": 24,
+"best": 24,
+"level": "Moderate",
+"peak_slot": 18,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for chest today",
+"Past Thursdays at 12:00"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Chest",
+"pref": 33,
+"best": 35,
+"level": "Moderate",
+"peak_slot": 18,
+"titles": [
+"1 fewer person than 16:30",
+"1 h later than you picked",
+"Moderate for chest today",
+"Past Thursdays at 17:30"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Chest",
+"pref": 37,
+"best": 37,
+"level": "Moderate",
+"peak_slot": 18,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for chest today",
+"Past Thursdays at 18:30"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Chest",
+"pref": 39,
+"best": 42,
+"level": "Quiet",
+"peak_slot": 18,
+"titles": [
+"4 fewer people than 19:30",
+"1 h 30 min later than you picked",
+"Quiet for chest today",
+"Past Thursdays at 21:00"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Chest",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 18,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for chest today",
+"Past Thursdays at 22:00"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Arms",
+"pref": 14,
+"best": 14,
+"level": "Quiet",
+"peak_slot": 23,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for arms today",
+"Past Thursdays at 07:00"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Arms",
+"pref": 24,
+"best": 26,
+"level": "Moderate",
+"peak_slot": 23,
+"titles": [
+"1 fewer person than 12:00",
+"1 h later than you picked",
+"Moderate for arms today",
+"Past Thursdays at 13:00"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Arms",
+"pref": 33,
+"best": 33,
+"level": "Moderate",
+"peak_slot": 23,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for arms today",
+"Past Thursdays at 16:30"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Arms",
+"pref": 37,
+"best": 39,
+"level": "Moderate",
+"peak_slot": 23,
+"titles": [
+"1 fewer person than 18:30",
+"1 h later than you picked",
+"Moderate for arms today",
+"Past Thursdays at 19:30"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Arms",
+"pref": 39,
+"best": 41,
+"level": "Quiet",
+"peak_slot": 23,
+"titles": [
+"1 fewer person than 19:30",
+"1 h later than you picked",
+"Quiet for arms today",
+"Past Thursdays at 20:30"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Arms",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 23,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for arms today",
+"Past Thursdays at 22:00"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Cardio",
+"pref": 14,
+"best": 12,
+"level": "Quiet",
+"peak_slot": 38,
+"titles": [
+"1 fewer person than 07:00",
+"1 h earlier than you picked",
+"Quiet for cardio today",
+"Past Thursdays at 06:00"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Cardio",
+"pref": 24,
+"best": 24,
+"level": "Moderate",
+"peak_slot": 38,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for cardio today",
+"Past Thursdays at 12:00"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Cardio",
+"pref": 33,
+"best": 31,
+"level": "Moderate",
+"peak_slot": 38,
+"titles": [
+"1 fewer person than 16:30",
+"1 h earlier than you picked",
+"Moderate for cardio today",
+"Past Thursdays at 15:30"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Cardio",
+"pref": 37,
+"best": 37,
+"level": "Moderate",
+"peak_slot": 38,
+"titles": [
+"Nothing nearby is quieter",
+"Moderate for cardio today",
+"Past Thursdays at 18:30"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Cardio",
+"pref": 39,
+"best": 42,
+"level": "Moderate",
+"peak_slot": 38,
+"titles": [
+"1 fewer person than 19:30",
+"1 h 30 min later than you picked",
+"Moderate for cardio today",
+"Past Thursdays at 21:00"
+]
+},
+{
+"weekday": "Thursday",
+"split": "Cardio",
+"pref": 44,
+"best": 44,
+"level": "Quiet",
+"peak_slot": 38,
+"titles": [
+"Nothing nearby is quieter",
+"Quiet for cardio today",
+"Past Thursdays at 22:00"
+]
+}
+]

@@ -1,0 +1,737 @@
+<title>How Fit Forecaster Works</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap">
+<style>
+/* Layout: a long-form study, one reading column (~68ch) with figures that may run wider.
+   Same tokens as the project page: whiteboard (light) / chalkboard (dark). */
+:root {
+  --bg: #F4F4F0; --surface: #FFFFFF; --board: #FBFBF8; --frame: #C9CDD1;
+  --text: #1B1B1B; --muted: #5E5F5B; --faint: #8A8B86; --line: rgba(27,27,27,.14); --line-strong: rgba(27,27,27,.45);
+  --hi: #D63A3A; --label: #2A5BD7;
+  --s1: #2a78d6; --s2: #eb6834; --s3: #1baf7a;          /* categorical slots 1-3, validated */
+  --good: #1F9D55; --neutral: #9A9B96; --bad: #D63A3A;   /* fewer / same / more people */
+  --texture: url(GHOST_PNG);
+  --font: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #141917; --surface: #1E2522; --board: #1E2522; --frame: #6B4A2E;
+    --text: #ECEDE6; --muted: #A9ACA3; --faint: #7D817A; --line: rgba(236,237,230,.12); --line-strong: rgba(236,237,230,.5);
+    --hi: #F2D86A; --label: #8EC9F0;
+    --s1: #3987e5; --s2: #d95926; --s3: #199e70;
+    --good: #5FCB7E; --neutral: #8A8D86; --bad: #F07A7A;
+    --texture: url(CHALK_PNG);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #141917; --surface: #1E2522; --board: #1E2522; --frame: #6B4A2E;
+  --text: #ECEDE6; --muted: #A9ACA3; --faint: #7D817A; --line: rgba(236,237,230,.12); --line-strong: rgba(236,237,230,.5);
+  --hi: #F2D86A; --label: #8EC9F0;
+  --s1: #3987e5; --s2: #d95926; --s3: #199e70;
+  --good: #5FCB7E; --neutral: #8A8D86; --bad: #F07A7A;
+  --texture: url(CHALK_PNG);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+body { margin: 0; background: var(--bg); color: var(--text); font-family: var(--font); font-size: 17.5px; line-height: 1.65; -webkit-font-smoothing: antialiased; }
+a { color: var(--label); }
+:focus-visible { outline: 2px solid var(--hi); outline-offset: 3px; border-radius: 4px; }
+.hand { border-radius: 255px 15px 225px 15px / 15px 225px 15px 255px; }
+
+nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--bg) 90%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+nav .in { max-width: 1120px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); display: flex; align-items: center; gap: 20px; min-height: 58px; }
+.brand { font-weight: 800; text-decoration: none; color: var(--text); display: inline-flex; gap: 8px; align-items: center; }
+.brand svg { width: 22px; height: 22px; }
+nav .links { margin-left: auto; display: flex; gap: 20px; font-size: 15px; }
+nav .links a { color: var(--muted); text-decoration: none; } nav .links a:hover { color: var(--text); }
+
+.wrap { max-width: 1120px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 56px; }
+@media (max-width: 980px) { .wrap { grid-template-columns: 1fr; gap: 0; } .toc { display: none; } }
+.toc { position: sticky; top: 84px; align-self: start; padding-top: 52px; font-size: 14px; }
+.toc b { display: block; font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--faint); margin-bottom: 10px; }
+.toc ol { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; counter-reset: t; }
+.toc li { counter-increment: t; } .toc a { color: var(--muted); text-decoration: none; display: flex; gap: 8px; }
+.toc a::before { content: counter(t); color: var(--hi); font-weight: 700; width: 14px; flex: none; }
+.toc a:hover { color: var(--text); }
+
+article { min-width: 0; padding-block: 48px 80px; }
+.prose { max-width: 68ch; }
+.kicker { font-size: 13px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; color: var(--label); margin: 0 0 12px; }
+h1 { font-size: clamp(34px, 5vw, 52px); line-height: 1.06; letter-spacing: -.035em; font-weight: 800; margin: 0 0 16px; text-wrap: balance; }
+.sub { font-size: 19px; color: var(--muted); margin: 0 0 26px; }
+.byline { font-size: 14px; color: var(--faint); }
+h2 { font-size: clamp(26px, 3vw, 32px); letter-spacing: -.025em; line-height: 1.15; margin: 64px 0 14px; scroll-margin-top: 80px; display: flex; gap: 12px; align-items: baseline; text-wrap: balance; }
+h2 .num { flex: none; display: inline-grid; place-items: center; width: 34px; height: 34px; border: 2.5px solid var(--hi); color: var(--hi); border-radius: 50%; font-size: 15px; font-weight: 800; transform: translateY(-3px); }
+h3 { font-size: 20px; letter-spacing: -.01em; margin: 34px 0 8px; }
+p { margin: 0 0 16px; }
+.muted { color: var(--muted); }
+strong { font-weight: 700; }
+code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: .88em; background: var(--surface); border: 1px solid var(--line); padding: 1px 6px; border-radius: 6px; }
+
+.tldr { background-color: var(--board); background-image: var(--texture); border: 2px solid var(--line-strong); padding: 24px 26px; margin: 28px 0 8px; }
+.tldr h3 { margin: 0 0 12px; font-size: 15px; letter-spacing: .08em; text-transform: uppercase; color: var(--hi); }
+.tldr ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; }
+.tldr li::marker { color: var(--hi); }
+
+figure { margin: 26px 0 30px; background: var(--surface); border: 1px solid var(--line); border-radius: 18px; padding: 22px 22px 18px; min-width: 0; }
+figure.plain { background: none; border: 0; padding: 0; }
+figcaption { font-size: 14.5px; color: var(--muted); margin-top: 12px; line-height: 1.5; }
+figcaption b { color: var(--text); }
+.figtitle { font-weight: 700; font-size: 16px; margin: 0 0 4px; }
+.figsub { font-size: 14px; color: var(--muted); margin: 0 0 14px; }
+.chart { position: relative; }
+.chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.sx { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+.sx svg { min-width: 600px; }
+.sx-hint { display: none; font-size: 13px; color: var(--faint); margin: 6px 0 0; }
+@media (max-width: 640px) { .sx-hint { display: block; } figure { padding: 18px 14px 14px; } }
+.chart text { font-family: var(--font); }
+.tip { position: absolute; z-index: 3; pointer-events: none; background: var(--text); color: var(--bg); font-size: 13px; line-height: 1.4; padding: 8px 10px; border-radius: 8px; max-width: 260px; transform: translate(-50%, calc(-100% - 12px)); }
+.tip[hidden] { display: none; }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 14px; color: var(--muted); margin: 0 0 12px; }
+.legend span { display: inline-flex; align-items: center; gap: 7px; }
+.legend i { width: 14px; height: 10px; border-radius: 3px; display: inline-block; }
+.legend i.line { height: 3px; border-radius: 2px; }
+details { margin-top: 12px; font-size: 14px; color: var(--muted); }
+summary { cursor: pointer; font-weight: 600; }
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 14.5px; font-variant-numeric: tabular-nums; margin-top: 8px; }
+th, td { text-align: left; padding: 7px 10px 7px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { font-weight: 600; color: var(--text); white-space: nowrap; }
+td.num, th.num { text-align: right; padding-right: 14px; white-space: nowrap; }
+.big-table td:first-child { font-weight: 600; color: var(--text); }
+tr.best td { color: var(--text); font-weight: 700; }
+
+.callout { border-left: 4px solid var(--hi); padding: 4px 0 4px 18px; margin: 20px 0; color: var(--muted); }
+.callout b { color: var(--text); }
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+@media (max-width: 760px) { .grid2 { grid-template-columns: 1fr; } }
+.mini { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; }
+.mini h4 { margin: 0 0 6px; font-size: 16px; }
+.mini p { margin: 0; color: var(--muted); font-size: 15px; }
+.kpis { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-block: 1px dashed var(--line-strong); margin: 26px 0; }
+.kpis div { padding: 16px 14px; } .kpis div + div { border-left: 1px dashed var(--line-strong); }
+.kpis b { display: block; font-size: 28px; font-weight: 800; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.kpis span { font-size: 14px; color: var(--muted); line-height: 1.4; display: block; }
+@media (max-width: 560px) { .kpis { grid-template-columns: 1fr; } .kpis div + div { border-left: 0; border-top: 1px dashed var(--line-strong); } }
+.steps-list { counter-reset: s; list-style: none; padding: 0; margin: 0 0 16px; display: grid; gap: 10px; }
+.steps-list li { counter-increment: s; position: relative; padding-left: 32px; }
+.steps-list li::before { content: counter(s); position: absolute; left: 0; font-weight: 800; color: var(--hi); }
+pre { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 14px 16px; overflow-x: auto; font-size: 14px; line-height: 1.6; }
+pre code { background: none; border: 0; padding: 0; }
+.back { display: inline-flex; gap: 8px; align-items: center; margin-top: 40px; font-weight: 700; text-decoration: none; padding: 12px 18px; border: 2px solid var(--line-strong); color: var(--text); }
+footer { color: var(--faint); font-size: 14px; padding-block: 24px 48px; max-width: 1120px; margin: 0 auto; padding-inline: clamp(16px, 4vw, 40px); }
+/* ---- simple explainer additions ---- */
+.clues { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 20px 0 22px; }
+@media (max-width: 640px) { .clues { grid-template-columns: repeat(2, 1fr); } }
+.clue { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 14px 16px; display: flex; flex-direction: column; gap: 2px; }
+.clue span { font-size: 13.5px; color: var(--muted); line-height: 1.35; }
+.clue b { font-size: 32px; font-weight: 800; letter-spacing: -.02em; line-height: 1.1; margin-top: 6px; font-variant-numeric: tabular-nums; }
+.clue b.sm { font-size: 22px; padding-top: 8px; }
+.clue i { font-style: normal; font-size: 13px; color: var(--faint); }
+.game { background-color: var(--board); background-image: var(--texture); border: 2px solid var(--line-strong); padding: 22px 24px; margin: 0 0 26px; }
+.game-q { font-weight: 700; font-size: 18px; margin: 0 0 12px; }
+.game-row, .slider-row { display: flex; align-items: center; gap: 14px; }
+.slider-row { margin-top: 12px; font-size: 15px; color: var(--muted); }
+.slider-row label { flex: none; min-width: 84px; }
+input[type=range] { flex: 1; accent-color: var(--hi); height: 28px; min-width: 0; }
+output { font-weight: 800; font-size: 22px; min-width: 2.2em; text-align: right; font-variant-numeric: tabular-nums; color: var(--text); }
+.slider-row output { font-size: 18px; }
+.btn-chalk { margin-top: 14px; font: inherit; font-weight: 700; font-size: 15.5px; padding: 11px 18px; background: var(--text); color: var(--bg); border: 0; cursor: pointer; }
+.btn-chalk:hover { opacity: .9; }
+.link-btn { font: inherit; font-size: 15px; background: none; border: 0; color: var(--label); cursor: pointer; padding: 10px 6px; margin-top: 14px; }
+.step-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.reveal { margin-top: 16px; padding-top: 14px; border-top: 1px dashed var(--line-strong); font-size: 16.5px; }
+.reveal p { margin: 0 0 6px; }
+.readout { margin: 12px 0 0; font-size: 15.5px; color: var(--muted); min-height: 1.6em; }
+.readout b { color: var(--text); }
+.fancy { display: inline-block; font-size: 14px; color: var(--muted); background: var(--surface); border: 1px dashed var(--line-strong); border-radius: 999px; padding: 4px 14px; margin: 4px 0 16px; }
+.fancy b { color: var(--label); }
+.seg { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: 12px; background: var(--bg); border: 1px solid var(--line); margin: 4px 0 14px; }
+.seg button { font: inherit; font-size: 14.5px; font-weight: 600; border: 0; background: none; color: var(--muted); padding: 7px 13px; border-radius: 9px; cursor: pointer; }
+.seg button[aria-selected=true], .seg button[aria-pressed=true] { background: var(--text); color: var(--bg); }
+.waffle { display: grid; grid-template-columns: repeat(20, 1fr); gap: 4px; max-width: 560px; }
+.waffle i { aspect-ratio: 1; border-radius: 3px; display: block; }
+@media (max-width: 560px) { .waffle { grid-template-columns: repeat(10, 1fr); max-width: 320px; } }
+.people { display: flex; flex-wrap: wrap; gap: 6px; }
+.people svg { width: 46px; height: 64px; }
+@media (max-width: 480px) { .people { gap: 4px; } .people svg { width: 28px; height: 39px; } }
+ul.plain { padding-left: 20px; display: grid; gap: 10px; }
+details.fold { border-top: 1px solid var(--line); padding: 12px 0; margin: 0; font-size: 16px; color: var(--text); }
+details.fold:last-of-type { border-bottom: 1px solid var(--line); }
+details.fold summary { font-size: 16.5px; padding: 4px 0; }
+details.fold[open] summary { margin-bottom: 12px; }
+</style>
+
+<nav><div class="in">
+  <a class="brand" href="./"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><path d="M4 5l-1 14M8 5l-1 14M12 5l-1 14M16 5l-1 14"/><path d="M1 15L19 8" stroke="var(--hi)"/></svg>Fit Forecaster</a>
+  <div class="links"><a href="./">Project</a><a href="app/index.html">Demo</a></div>
+</div></nav>
+
+<div class="wrap">
+  <aside class="toc" aria-label="Contents"><b>Contents</b><ol>
+    <li><a href="#job">The job</a></li><li><a href="#clues">The clues</a></li><li><a href="#learn">Guesser 1: the line</a></li>
+    <li><a href="#tree">The tree of questions</a></li><li><a href="#forest">Guesser 2: the forest</a></li><li><a href="#boost">Guesser 3: step by step</a></li>
+    <li><a href="#team">The team vote</a></li><li><a href="#exam">The exam</a></li><li><a href="#score">The score</a></li>
+    <li><a href="#helps">Does it help?</a></li><li><a href="#struggles">Where it struggles</a></li><li><a href="#curious">For the curious</a></li>
+  </ol></aside>
+
+  <article>
+    <div class="prose">
+      <p class="kicker">How it works · Fit Forecaster</p>
+      <h1>How the app guesses how busy the gym will be</h1>
+      <p class="sub">Explained simply, with the real numbers and things you can click. No maths needed.</p>
+
+      <div class="tldr hand">
+        <h3>The short version</h3>
+        <ul>
+          <li>The app looks at how busy the gym was on earlier days, and guesses how busy each half hour will be.</li>
+          <li>Three different "guessers" each make a guess. The app combines them into one.</li>
+          <li>Its guesses are off by about <strong>OV_MAE people</strong> on average.</li>
+          <li>When it moves you to another time, you meet about <strong>RC_SAVED fewer people</strong> on average.</li>
+        </ul>
+      </div>
+
+      <h2 id="job"><span class="num">1</span>The job</h2>
+      <p>Say you want to train <strong>Legs at 19:30 on a Saturday</strong>. The app has to guess how many people will be doing Legs at 19:30, and at every half hour near it. Then it points you to the quietest one.</p>
+    </div>
+    <figure>
+      <p class="figtitle">The app's guesses for Saturday evening, Legs</p>
+      <p class="figsub">You picked 19:30. The app checks 90 minutes either side.</p>
+      <div class="chart" id="chartJob"></div>
+      <figcaption id="jobCap"></figcaption>
+    </figure>
+    <div class="prose">
+      <p>So the hard part is the <strong>guessing</strong>. The rest of this page is about how the guessing works, and how good it is.</p>
+
+      <h2 id="clues"><span class="num">2</span>The clues (try it yourself)</h2>
+      <p>The app can't see the future. All it has are clues from <strong>earlier days</strong>. Here are the real clues it had for that Saturday at 19:30:</p>
+    </div>
+    <div class="clues">
+      <div class="clue"><span>Yesterday at 19:30</span><b>CL_YDAY</b><i>people</i></div>
+      <div class="clue"><span>Last Saturday at 19:30</span><b>CL_LWEEK</b><i>people</i></div>
+      <div class="clue"><span>Saturdays at 19:30, usually</span><b>CL_USUAL</b><i>people</i></div>
+      <div class="clue"><span>Last 7 days at 19:30, average</span><b>CL_R7</b><i>people</i></div>
+      <div class="clue"><span>Last 3 days at 19:30, average</span><b>CL_R3</b><i>people</i></div>
+      <div class="clue"><span>Day and time</span><b class="sm">Sat 19:30</b><i>weekend, evening</i></div>
+    </div>
+    <div class="game hand" id="game">
+      <p class="game-q">Your turn. How many people will be doing Legs at 19:30?</p>
+      <div class="game-row">
+        <input type="range" id="guess" min="0" max="12" step="1" value="4" aria-label="Your guess">
+        <output id="guessOut">4</output>
+      </div>
+      <button class="btn-chalk hand" id="lock">Lock in my guess</button>
+      <div class="reveal" id="reveal" hidden></div>
+    </div>
+    <div class="prose">
+      <p>You just did what the app does: you looked at the clues and made a sensible guess. The difference is that the app has learned from <strong>hundreds of past examples</strong> how much to trust each clue.</p>
+      <p class="fancy"><b>Fancy name:</b> the clues are called <em>features</em>. The app uses 13 of them; the full list is at the bottom of the page.</p>
+
+      <h2 id="learn"><span class="num">3</span>Learning from the past (Guesser 1)</h2>
+      <p>Take one clue: how busy that time <strong>usually</strong> is on that weekday. Every dot below is one half hour from the past. Left to right is the usual crowd. Bottom to top is how many people really came.</p>
+      <p>There's a pattern (usually busy means probably busy) but the dots are spread out. People are random. The app's job is to find the pattern under the noise.</p>
+    </div>
+    <figure>
+      <p class="figtitle">Usual crowd vs real crowd, Legs, 792 past half hours</p>
+      <div class="seg" role="tablist" aria-label="Show a way of guessing">
+        <button role="tab" aria-selected="true" data-mode="dots">Just the dots</button>
+        <button role="tab" aria-selected="false" data-mode="line">Straight line</button>
+        <button role="tab" aria-selected="false" data-mode="steps">Staircase</button>
+      </div>
+      <div class="chart" id="chartLearn"></div>
+      <div class="slider-row"><label for="usual">Usual crowd</label><input type="range" id="usual" min="0" max="12" step="0.5" value="5"><output id="usualOut">5</output></div>
+      <p class="readout" id="learnRead"></p>
+    </figure>
+    <div class="prose">
+      <div class="grid2">
+        <div class="mini"><h4>The straight line: Guesser 1</h4><p>Draw one line through the middle of the dots. To guess, go up from the usual crowd to the line. Simple and steady, but the real pattern isn't always straight.</p><p class="fancy" style="margin-top:8px"><b>Fancy name:</b> Linear Regression.</p></div>
+        <div class="mini"><h4>The staircase: the idea behind Guessers 2 and 3</h4><p>Split the dots into groups (quiet, medium, busy, very busy) and use each group's average. It can bend to fit the data, which straight lines can't.</p><p class="fancy" style="margin-top:8px"><b>Fancy name:</b> a decision tree.</p></div>
+      </div>
+      <p style="margin-top:18px">The real app does this with all 13 clues at once, not just one. That's hard to draw, but the idea is exactly the same.</p>
+
+      <h2 id="tree"><span class="num">4</span>The tree of questions</h2>
+      <p>The staircase is really a <strong>decision tree</strong>, and the next two guessers are built from lots of them. A decision tree is a game of yes/no questions, like "20 Questions". Each answer sends you left or right, until you reach an answer at the bottom.</p>
+      <p>Below is a real tree the app learned from the Legs data. Click through it with our Saturday 19:30.</p>
+    </div>
+    <figure>
+      <p class="figtitle">Follow Saturday 19:30 through a real tree</p>
+      <div class="chart" id="chartTree"></div>
+      <div class="step-row"><button class="btn-chalk hand" id="treeNext">Ask the first question</button><button class="link-btn" id="treeReset" hidden>Start again</button></div>
+      <p class="readout" id="treeRead">Our evening: usually <b>5</b> people on Saturdays at 19:30.</p>
+    </figure>
+    <div class="prose">
+      <p>The real trees ask many more questions, so their answers are much finer than these 4 boxes. But one tree on its own is a bit jumpy: small changes in the data can change its questions. So the app doesn't trust just one.</p>
+
+      <h2 id="forest"><span class="num">5</span>Guesser 2: ask 200 trees</h2>
+      <p>Think of guessing the number of sweets in a jar. One person's guess can be way off. The <strong>average of 200 people's guesses</strong> is usually close. That's this guesser.</p>
+      <p>It grows 200 trees, each from a slightly different random slice of the past, so each one guesses differently. Then it takes the average. These are the real guesses of all 200 trees for our evening:</p>
+    </div>
+    <figure>
+      <p class="figtitle">200 trees, one guess each</p>
+      <div class="seg" aria-label="How many trees to ask">
+        <button aria-pressed="false" data-n="1">Ask 1 tree</button><button aria-pressed="false" data-n="10">Ask 10</button><button aria-pressed="true" data-n="200">Ask all 200</button>
+      </div>
+      <div class="chart" id="chartForest"></div>
+      <p class="readout" id="forestRead"></p>
+    </figure>
+    <div class="prose">
+      <p class="fancy"><b>Fancy name:</b> Random Forest.</p>
+
+      <h2 id="boost"><span class="num">6</span>Guesser 3: fix the mistakes, step by step</h2>
+      <p>This one works like a student going through practice tests. Start with a rough guess. Check where it was wrong on past days. Add a small tree that fixes a bit of that mistake. Repeat, <strong>300 times</strong>.</p>
+      <p>Each fix is small on purpose (only 5% of a full correction), so it doesn't overreact to one strange day. Drag the slider to watch its guess for our evening build up:</p>
+    </div>
+    <figure>
+      <p class="figtitle">Its guess for Saturday 19:30, after each fix</p>
+      <div class="chart" id="chartBoost"></div>
+      <div class="slider-row"><label for="steps">Fixes</label><input type="range" id="steps" min="1" max="300" step="1" value="300"><output id="stepsOut">300</output></div>
+      <p class="readout" id="boostRead"></p>
+    </figure>
+    <div class="prose">
+      <p class="fancy"><b>Fancy name:</b> XGBoost (gradient boosting). It's also told the answer is a <em>count of people</em>, so it never guesses below zero.</p>
+
+      <h2 id="team"><span class="num">7</span>The team vote</h2>
+      <p>The app asks all three guessers, then combines them. The two tree guessers are the strongest, so each gets 45% of the say. The straight line is weaker, so it gets 10%: enough to steady things, not enough to drag them down.</p>
+    </div>
+    <figure>
+      <p class="figtitle">Three guesses become one, for Saturday 19:30</p>
+      <div class="chart" id="chartTeam"></div>
+      <figcaption id="teamCap"></figcaption>
+    </figure>
+    <div class="prose">
+      <p>Why bother with a team? Different guessers make <strong>different mistakes</strong>. When you average them, some mistakes cancel out. The team ends up a little more accurate than any one guesser (section 9 shows the numbers).</p>
+
+      <h2 id="exam"><span class="num">8</span>The exam: how we checked it</h2>
+      <p>You can't grade a student on questions they've already seen the answers to. Same here. We had 30 days of data, so:</p>
+    </div>
+    <figure>
+      <p class="figtitle">Study the first 24 days, take the exam on the last 6</p>
+      <div class="chart" id="chartSplit"></div>
+      <figcaption>The guessers never saw the last 6 days while learning. Then they guessed every half hour of those days, for every body group: <b>1,386 guesses</b>, each checked against what really happened.</figcaption>
+    </figure>
+    <figure>
+      <p class="figtitle">Exam answers: three days of Legs</p>
+      <p class="figsub">Bars are what really happened. The line is the app's guess.</p>
+      <div class="chart" id="chartDays"></div>
+      <figcaption>The guess follows the shape of the day (busy mornings and evenings) but can't catch every random jump. <b>Hover or tap</b> a bar for the exact numbers.</figcaption>
+    </figure>
+
+    <div class="prose">
+      <h2 id="score"><span class="num">9</span>The score</h2>
+      <p>The simplest score: <strong>how many people was the guess off by?</strong> On average, the app is off by <strong>OV_MAE people</strong> per half hour. Here's what that looks like across all the exam guesses:</p>
+    </div>
+    <figure>
+      <p class="figtitle">Out of every 100 guesses</p>
+      <div class="legend" id="waffleLegend"></div>
+      <div class="waffle" id="waffle" role="img"></div>
+      <figcaption>Two out of three guesses land within 2 people of the real count. The big misses are mostly in the General area, where 20 or more people is normal, so being off by 5 isn't as bad as it sounds.</figcaption>
+    </figure>
+    <div class="prose">
+      <p>Is that good? Compare it with rules anyone could use without any machine learning:</p>
+    </div>
+    <figure>
+      <p class="figtitle">Average miss, in people (shorter is better)</p>
+      <div class="chart" id="chartCompare"></div>
+      <figcaption><b>"Same as last week"</b> is the worst: one week's crowd is too random to copy. <b>"The usual for this weekday and time"</b> is a decent rule. The app beats both, and the team beats each guesser on its own, though only by a little.</figcaption>
+    </figure>
+
+    <div class="prose">
+      <h2 id="helps"><span class="num">10</span>Does it actually help you?</h2>
+      <p>Good guesses don't automatically mean good advice, so we tested the advice itself. On every exam day, for every body group and every time you could pick, we let the app suggest a time, then checked the <strong>real</strong> crowd.</p>
+    </div>
+    <figure>
+      <p class="figtitle">Every 10 times the app moves you to a different time</p>
+      <div class="people" id="people" role="img"></div>
+      <div class="legend" id="peopleLegend" style="margin-top:14px"></div>
+      <figcaption>Most moves really were quieter. Some made no difference, and some were busier, because the gym is random and no guess is perfect. Averaged over every move, you meet <b>RC_SAVED fewer people</b>.</figcaption>
+    </figure>
+
+    <div class="prose">
+      <h2 id="struggles"><span class="num">11</span>Where it struggles</h2>
+      <ul class="plain">
+        <li><b>Small crowds are hard.</b> When 2 to 4 people is normal (Arms, Core), one person more or less is a big change, and nobody can predict that.</li>
+        <li><b>The gym visits are simulated.</b> The project has a weekly timetable of members, not a log of real visits, so a month of visits was simulated from it. Real check-in data would help the most.</li>
+        <li><b>A month is short.</b> That's only 4 or 5 of each weekday to learn from.</li>
+        <li><b>It doesn't know about holidays, weather or exam weeks.</b></li>
+        <li><b>It gets better with use.</b> When people log how busy it really was, those real counts replace the simulated ones, and the app relearns after every 10 reports.</li>
+      </ul>
+
+      <h2 id="curious"><span class="num">12</span>For the curious</h2>
+      <p>The extra detail, folded away. Open whatever you're interested in.</p>
+      <details class="fold"><summary>All 13 clues, with the values for Saturday 19:30</summary><div class="table-wrap"><table><thead><tr><th>Clue</th><th>What it means</th><th class="num">Value</th></tr></thead><tbody id="hintTable"></tbody></table></div><p class="muted" style="font-size:14px">"Clock position" turns the time into a point on a circle, so the app knows 22:00 and 06:00 are both quiet ends of the day, not far-apart numbers.</p></details>
+      <details class="fold"><summary>Which clues matter most</summary><p class="muted" style="font-size:15px">How much each clue helped the tree guessers, averaged over all body groups. Recent history and the time of day do most of the work.</p><div class="chart" id="chartImportance"></div></details>
+      <details class="fold"><summary>Scores for every body group, including R²</summary>
+        <p class="muted" style="font-size:15px"><b>R²</b> is the score data scientists usually quote. It says how much of the ups and downs the guess explains: 1 is perfect, 0 is no better than always guessing the average. The app's average R² is AVG_R2.</p>
+        <div class="table-wrap"><table id="groupTable"></table></div></details>
+      <details class="fold"><summary>How the score was fixed (it used to say 0.91)</summary>
+        <p class="muted" style="font-size:15px">The original version of this project reported R² 0.91, but two bugs inflated it: the exam questions were also in the study material, and one clue secretly included the answer. After fixing both, on the first, simpler simulation, the score was 0.80 out of a best possible 0.81. The simulation was then made more realistic (members skip days, rest after training, change workouts), which makes crowds more random, so today's scores are lower but closer to a real gym.</p>
+        <div class="chart" id="chartLadder"></div></details>
+      <details class="fold"><summary>Version 1 vs version 2: what changed and why</summary><p class="muted" style="font-size:15px">Fit Forecaster started as a group college project and was then rebuilt. The project page has the full story: what version 1 had, what was wrong with it, and the seven changes made in version 2. <a href="./#story">Read the story →</a></p></details>
+      <details class="fold"><summary>Run it yourself</summary>
+<pre><code>pip install -r requirements.txt
+python train_and_test.py               # train and save the models
+python experiments/study.py            # every number on this page
+python experiments/accuracy_ladder.py  # how the score was fixed</code></pre></details>
+      <a class="back hand" href="./">← Back to the project</a>
+    </div>
+  </article>
+</div>
+<footer>Fit Forecaster · every number on this page comes from experiments/study.py.</footer>
+
+<script>
+const R = /*STUDY*/;
+const EX = R.example_row, EM = R.example_models, REAL = EX.visitor_count;
+const NAMES = {
+  time_slot: ["Time of day", "Which half hour (12 = 06:00, 39 = 19:30)"],
+  day_of_week: ["Day of the week", "0 = Monday … 6 = Sunday"],
+  month: ["Month", "11 = November"],
+  is_weekend: ["Weekend", "1 on Saturday and Sunday"],
+  hour_sin: ["Clock position (a)", "The time of day as a point on a circle"],
+  hour_cos: ["Clock position (b)", "The other half of that point"],
+  day_sin: ["Week position (a)", "The weekday as a point on a circle"],
+  day_cos: ["Week position (b)", "The other half of that point"],
+  prev_day_attendance: ["Yesterday", "Same half hour, the day before"],
+  prev_week_attendance: ["Last week", "Same half hour, 7 days before"],
+  rolling_3day_avg: ["3-day average", "This half hour, last 3 days"],
+  rolling_7day_avg: ["7-day average", "This half hour, last 7 days"],
+  same_weekday_avg: ["Usual for this weekday", "This half hour on this weekday in past weeks"],
+};
+const $ = id => document.getElementById(id);
+const slotTime = s => String(Math.floor(s / 2)).padStart(2, "0") + ":" + (s % 2 ? "30" : "00");
+const pct = (x, d = 0) => (x * 100).toFixed(d) + "%";
+const f1 = v => (+v).toFixed(1);
+const groups = Object.keys(R.groups);
+const avg = f => groups.reduce((a, g) => a + f(R.groups[g]), 0) / groups.length;
+const widthOf = el => Math.max(300, Math.min(680, el.clientWidth || 640));
+const DRAWS = [];
+const draw = f => { DRAWS.push(f); f(); };
+let lastW = innerWidth;
+addEventListener("resize", () => { if (Math.abs(innerWidth - lastW) < 40) return; lastW = innerWidth; DRAWS.forEach(f => f()); });
+document.querySelectorAll("details").forEach(d => d.addEventListener("toggle", () => d.open && DRAWS.forEach(f => f())));
+
+function tipify(el) {
+  const tip = document.createElement("div"); tip.className = "tip"; tip.hidden = true; el.appendChild(tip);
+  const show = (text, x, y) => { tip.textContent = text; tip.hidden = false; const w = el.clientWidth; tip.style.left = Math.min(Math.max(x, 110), w - 110) + "px"; tip.style.top = y + "px"; };
+  el.querySelectorAll("[data-tip]").forEach(m => {
+    m.setAttribute("tabindex", "0");
+    m.addEventListener("pointermove", e => { const b = el.getBoundingClientRect(); show(m.dataset.tip, e.clientX - b.left, e.clientY - b.top); });
+    m.addEventListener("pointerleave", () => tip.hidden = true);
+    m.addEventListener("focus", () => { const b = el.getBoundingClientRect(), r = m.getBoundingClientRect(); show(m.dataset.tip, r.left - b.left + r.width / 2, r.top - b.top); });
+    m.addEventListener("blur", () => tip.hidden = true);
+  });
+}
+
+// horizontal bars (negatives allowed), sized to the container
+function hbars(el, rows, { min = 0, max = 1, ticks = [0, .25, .5, .75, 1], fmt = v => v.toFixed(2), tickFmt = t => t, labelW = 170, color = () => "var(--s1)", aria = "" } = {}) {
+  const W = widthOf(el), small = W < 480, fs = small ? 12 : 13.5; labelW = Math.min(labelW, Math.round(W * .44));
+  const rowH = small ? 22 : 26, gap = small ? 8 : 10, top = 6, bottom = 26, H = top + rows.length * (rowH + gap) - gap + bottom;
+  const x0 = labelW, x1 = W - 52, sx = v => x0 + (x1 - x0) * (v - min) / (max - min), zx = sx(Math.max(min, 0));
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${aria}">`;
+  ticks.forEach(t => { const x = sx(t); s += `<line x1="${x}" y1="${top}" x2="${x}" y2="${H - bottom}" stroke="var(--line)"/><text x="${x}" y="${H - 8}" text-anchor="middle" font-size="12" fill="var(--muted)">${tickFmt(t)}</text>`; });
+  rows.forEach((r, i) => {
+    const y = top + i * (rowH + gap), x = r.v >= 0 ? zx : Math.max(sx(r.v), x0), w = Math.max(Math.abs((r.v >= 0 ? sx(r.v) : zx) - x), 2);
+    const inside = r.v < 0 && x - x0 < 44;
+    s += `<g data-tip="${r.tip || r.label + ": " + fmt(r.v)}"><rect x="0" y="${y - 4}" width="${W}" height="${rowH + 8}" fill="transparent"/>
+      <text x="${x0 - 10}" y="${y + rowH / 2 + 5}" text-anchor="end" font-size="${fs}" font-weight="${r.strong ? 700 : 500}" fill="var(--text)">${r.label}</text>
+      <rect x="${x}" y="${y}" width="${w}" height="${rowH}" rx="4" fill="${color(r, i)}"/>
+      <text x="${r.v >= 0 ? x + w + 7 : inside ? x + 6 : x - 7}" y="${y + rowH / 2 + 5}" text-anchor="${r.v >= 0 || inside ? "start" : "end"}" font-size="${fs - .5}" font-weight="700" fill="${inside ? "var(--bg)" : "var(--text)"}">${fmt(r.v)}</text></g>`;
+  });
+  if (min < 0) s += `<line x1="${zx}" y1="${top - 4}" x2="${zx}" y2="${H - bottom}" stroke="var(--line-strong)" stroke-width="1.5"/>`;
+  el.innerHTML = s + "</svg>"; tipify(el);
+}
+
+// ------------------------------------------------ 1. the job: the guesses around 19:30
+const SAT = R.example_week_legs.filter(d => d.date === EX.date);
+const PREF = EX.time_slot;
+function recommend(rows, pref) {
+  const near = rows.filter(d => Math.abs(d.slot - pref) <= 3);
+  let best = near.reduce((a, b) => (Math.round(b.pred * 10) < Math.round(a.pred * 10) || (Math.round(b.pred * 10) === Math.round(a.pred * 10) && Math.abs(b.slot - pref) < Math.abs(a.slot - pref))) ? b : a);
+  const mine = near.find(d => d.slot === pref);
+  if (mine.pred - best.pred < .5) best = mine;
+  return { near, best, mine };
+}
+draw(function () {
+  const el = $("chartJob"), { near, best, mine } = recommend(SAT, PREF);
+  const W = widthOf(el), H = 230, T = 34, B = 50, L = 4, n = near.length, cw = (W - L * 2) / n, bw = Math.min(54, cw * .62);
+  const maxY = Math.max(...near.map(d => d.pred)) * 1.1, sy = v => T + (H - T - B) * (1 - v / maxY);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Guessed crowd from ${slotTime(near[0].slot)} to ${slotTime(near[n - 1].slot)}; the app suggests ${slotTime(best.slot)}">`;
+  s += `<line x1="0" y1="${sy(0)}" x2="${W}" y2="${sy(0)}" stroke="var(--line-strong)"/>`;
+  near.forEach((d, i) => {
+    const cx = L + cw * i + cw / 2, isBest = d.slot === best.slot, isMine = d.slot === PREF;
+    s += `<g data-tip="${slotTime(d.slot)}: the app guessed ${f1(d.pred)} people (really: ${d.actual})">
+      <rect x="${cx - cw / 2}" y="0" width="${cw}" height="${H}" fill="transparent"/>
+      <rect x="${cx - bw / 2}" y="${sy(d.pred)}" width="${bw}" height="${sy(0) - sy(d.pred)}" rx="5" fill="${isBest ? "var(--good)" : "var(--s1)"}" fill-opacity="${isBest ? 1 : .35}" ${isMine ? 'stroke="var(--text)" stroke-width="2" stroke-dasharray="5 3"' : ""}/>
+      <text x="${cx}" y="${sy(d.pred) - 8}" text-anchor="middle" font-size="14" font-weight="700" fill="var(--text)">${f1(d.pred)}</text>
+      <text x="${cx}" y="${H - B + 20}" text-anchor="middle" font-size="12.5" font-weight="${isMine || isBest ? 700 : 500}" fill="var(--text)">${slotTime(d.slot)}</text>
+      ${isMine ? `<text x="${cx}" y="${H - B + 38}" text-anchor="middle" font-size="12" font-weight="700" fill="var(--muted)">your pick</text>` : ""}
+      ${isBest ? `<text x="${cx}" y="${H - B + 38}" text-anchor="middle" font-size="12" font-weight="700" fill="var(--good)">suggested</text>` : ""}</g>`;
+  });
+  el.innerHTML = s + "</svg>"; tipify(el);
+  $("jobCap").innerHTML = `The app guessed about <b>${f1(mine.pred)} people</b> at ${slotTime(PREF)} and <b>${f1(best.pred)}</b> at ${slotTime(best.slot)}, so it suggested ${slotTime(best.slot)}. What really happened that evening: <b>${mine.actual} people</b> at ${slotTime(PREF)}, <b>${best.actual}</b> at ${slotTime(best.slot)}.`;
+});
+
+// ------------------------------------------------ 2. the guessing game
+(function () {
+  const g = $("guess"), out = $("guessOut"), btn = $("lock"), rv = $("reveal");
+  g.addEventListener("input", () => { out.textContent = g.value; });
+  btn.addEventListener("click", () => {
+    if (!rv.hidden) { rv.hidden = true; btn.textContent = "Lock in my guess"; g.disabled = false; g.focus(); return; }
+    const v = +g.value, app = EM.preds.blend, miss = Math.abs(v - REAL), appMiss = Math.abs(app - REAL);
+    const verdict = miss < appMiss ? "You beat the app this time. Nice." : miss <= 1 ? "Very close, about as close as the app." : v < REAL ? "A bit low. The usual Saturday crowd (5) was the best clue here." : "A bit high. Yesterday's 7 was busier than normal, so it was a slightly misleading clue.";
+    rv.innerHTML = `<p>You guessed <b>${v}</b>. The app guessed <b>${f1(app)}</b>. What really happened: <b>${REAL} people</b>.</p><p class="muted">${verdict}</p>`;
+    rv.hidden = false; btn.textContent = "Guess again"; g.disabled = true;
+  });
+})();
+
+// ------------------------------------------------ 3. one clue: dots, a straight line, a staircase
+(function () {
+  const O = R.one_hint, [b0, b1] = O.line, slider = $("usual"), out = $("usualOut"), read = $("learnRead");
+  let mode = "dots";
+  const lineAt = x => b0 + b1 * x, stepAt = x => (O.steps.find(s => x <= s.to) || O.steps[O.steps.length - 1]).value;
+  const names = ["quiet", "medium", "busy", "very busy"];
+  const rnd = i => { const v = Math.sin(i * 12.9898) * 43758.5453; return v - Math.floor(v); };
+  function render() {
+    const el = $("chartLearn"), W = widthOf(el), H = Math.round(Math.min(340, W * .62)), L = 34, Rr = 10, T = 10, B = 34;
+    const xmax = 13, ymax = Math.max(...O.points.map(p => p[1])) + 1, sx = v => L + (W - L - Rr) * v / xmax, sy = v => T + (H - T - B) * (1 - v / ymax);
+    const x = +slider.value;
+    let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Scatter of usual crowd against real crowd for 792 past half hours">`;
+    for (let v = 0; v <= ymax; v += 5) s += `<line x1="${L}" y1="${sy(v)}" x2="${W - Rr}" y2="${sy(v)}" stroke="var(--line)"/><text x="${L - 6}" y="${sy(v) + 4}" text-anchor="end" font-size="11" fill="var(--muted)">${v}</text>`;
+    for (let v = 0; v <= 12; v += 2) s += `<text x="${sx(v)}" y="${H - B + 16}" text-anchor="middle" font-size="11" fill="var(--muted)">${v}</text>`;
+    s += `<text x="${(L + W) / 2}" y="${H - 4}" text-anchor="middle" font-size="12" fill="var(--muted)">usual crowd at that time →</text>`;
+    s += `<text x="${L + 4}" y="${T + 12}" font-size="12" fill="var(--muted)">real crowd ↑</text>`;
+    const r = W < 480 ? 2.2 : 3;
+    O.points.forEach((p, i) => { s += `<circle cx="${sx(p[0] + (rnd(i) - .5) * .25)}" cy="${sy(p[1] + (rnd(i + 999) - .5) * .5)}" r="${r}" fill="var(--s1)" fill-opacity="${mode === "dots" ? .4 : .2}"/>`; });
+    if (mode === "line") s += `<line x1="${sx(0)}" y1="${sy(lineAt(0))}" x2="${sx(xmax)}" y2="${sy(lineAt(xmax))}" stroke="var(--s2)" stroke-width="4" stroke-linecap="round"/>`;
+    if (mode === "steps") {
+      let d = "";
+      O.steps.forEach((st, k) => { d += `${k ? "L" : "M"}${sx(st.from)},${sy(st.value)} L${sx(Math.min(st.to, xmax))},${sy(st.value)} `; });
+      s += `<path d="${d}" fill="none" stroke="var(--s3)" stroke-width="4" stroke-linejoin="round"/>`;
+      O.steps.forEach((st, k) => s += `<text x="${(sx(st.from) + sx(Math.min(st.to, xmax))) / 2}" y="${sy(st.value) - 9}" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--text)">${names[k]}</text>`);
+    }
+    s += `<line x1="${sx(x)}" y1="${T}" x2="${sx(x)}" y2="${H - B}" stroke="var(--hi)" stroke-width="2" stroke-dasharray="4 4"/>`;
+    if (mode !== "dots") { const gy = mode === "line" ? lineAt(x) : stepAt(x); s += `<circle cx="${sx(x)}" cy="${sy(gy)}" r="7" fill="var(--hi)" stroke="var(--surface)" stroke-width="2.5"/>`; }
+    el.innerHTML = s + "</svg>";
+    out.textContent = x;
+    if (mode === "dots") {
+      const near = O.points.filter(p => Math.abs(p[0] - x) <= .5).map(p => p[1]);
+      read.innerHTML = near.length ? `When the usual crowd was about <b>${x}</b>, the real crowd was anywhere from <b>${Math.min(...near)}</b> to <b>${Math.max(...near)}</b> (${near.length} half hours). That's the randomness. Now try a way of guessing above.` : `No past half hours were usually around ${x}. Try another value.`;
+    } else if (mode === "line") read.innerHTML = `Straight line: start at ${b0.toFixed(1)}, add ${b1.toFixed(2)} for each usual person. For ${x}, it guesses <b>${f1(lineAt(x))} people</b>.`;
+    else { const k = O.steps.findIndex(s2 => x <= s2.to); read.innerHTML = `Staircase: ${x} falls in the <b>${names[k < 0 ? 3 : k]}</b> group, so it guesses that group's average: <b>${f1(stepAt(x))} people</b>.`; }
+  }
+  document.querySelectorAll("[data-mode]").forEach(b => b.addEventListener("click", () => {
+    mode = b.dataset.mode; b.parentElement.querySelectorAll("button").forEach(o => o.setAttribute("aria-selected", o === b)); render();
+  }));
+  slider.addEventListener("input", render);
+  draw(render);
+})();
+
+// ------------------------------------------------ 4. the real tree, step by step
+(function () {
+  const t = R.example_tree, el = $("chartTree"), next = $("treeNext"), reset = $("treeReset"), read = $("treeRead");
+  const nodes = [t, t.left, t.right, t.left.left, t.left.right, t.right.left, t.right.right];
+  const q = n => n.feature === "hour_cos" ? "Between 08:30 and 15:30?" : `Usually ${n.threshold} or fewer?`;
+  const path = [0]; { let cur = t, idx = 0; while (!cur.leaf) { const left = EX[cur.feature] <= cur.threshold; idx = idx * 2 + (left ? 1 : 2); cur = left ? cur.left : cur.right; path.push(idx); } }
+  let step = 0;
+  const msgs = [
+    `Our evening: usually <b>${EX.same_weekday_avg}</b> people on Saturdays at 19:30.`,
+    `Question 1: is it usually <b>${t.threshold} or fewer</b> people? Ours is ${EX.same_weekday_avg}, so <b>no</b>: go right.`,
+    `Question 2: is it usually <b>${t.right.threshold} or fewer</b>? ${EX.same_weekday_avg} is, so <b>yes</b>: go left.`,
+    `Answer: <b>${f1(nodes[path[2]].value)} people</b>, the average of the ${nodes[path[2]].n} past half hours that ended up here. What really happened: ${REAL}.`,
+  ];
+  const labels = ["Ask the first question", "Next question", "See the answer"];
+  function render() {
+    const W = 680, H = 300, bw = 186, bh = 64;
+    const pos = [[W / 2, 20], [W * .25, 120], [W * .75, 120], [W * .125, 226], [W * .375, 226], [W * .625, 226], [W * .875, 226]];
+    const on = new Set(path.slice(0, step));
+    let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Decision tree with two questions and four answers: 3.9, 2.1, 4.7 and 6.1 people">`;
+    [[0, 1, "yes"], [0, 2, "no"], [1, 3, "yes"], [1, 4, "no"], [2, 5, "yes"], [2, 6, "no"]].forEach(([a, b, lab]) => {
+      const lit = on.has(a) && on.has(b), [x1, y1] = pos[a], [x2, y2] = pos[b];
+      s += `<line x1="${x1}" y1="${y1 + bh}" x2="${x2}" y2="${y2}" stroke="${lit ? "var(--hi)" : "var(--line-strong)"}" stroke-width="${lit ? 3.5 : 1.5}"/>`;
+      s += `<text x="${x1 + (x2 - x1) * .3 + (x2 < x1 ? -16 : 16)}" y="${y1 + bh + (y2 - y1 - bh) * .3 + 2}" text-anchor="middle" font-size="12" font-weight="600" fill="var(--muted)">${lab}</text>`;
+    });
+    nodes.forEach((n, i) => {
+      const [cx, y] = pos[i], w = n.leaf ? 128 : bw, lit = on.has(i);
+      s += `<g><rect x="${cx - w / 2}" y="${y}" width="${w}" height="${bh}" rx="12" fill="var(--surface)" stroke="${lit ? "var(--hi)" : "var(--line-strong)"}" stroke-width="${lit ? 3.5 : 1.5}"/>
+        <text x="${cx}" y="${y + 26}" text-anchor="middle" font-size="${n.leaf ? 17 : 14}" font-weight="700" fill="var(--text)">${n.leaf ? f1(n.value) + " people" : q(n)}</text>
+        <text x="${cx}" y="${y + 47}" text-anchor="middle" font-size="12" fill="var(--muted)">${n.n} past half hours</text></g>`;
+    });
+    el.innerHTML = `<div class="sx">` + s + `</svg></div><p class="sx-hint">Swipe sideways to see the whole tree.</p>`;
+    read.innerHTML = msgs[step];
+    next.hidden = step >= 3; reset.hidden = step === 0; next.textContent = labels[Math.min(step, 2)];
+  }
+  next.addEventListener("click", () => { step = Math.min(3, step + 1); render(); });
+  reset.addEventListener("click", () => { step = 0; render(); next.focus(); });
+  draw(render);
+})();
+
+// ------------------------------------------------ 5. the forest: 200 real tree guesses
+(function () {
+  const trees = EM.rf_trees, read = $("forestRead"); let n = 200;
+  function render() {
+    const el = $("chartForest"), W = widthOf(el), L = 10, Rr = 10, lo = 0, hi = 10, bin = .25, sx = v => L + (W - L - Rr) * (v - lo) / (hi - lo);
+    const d = Math.min(10, (W - L - Rr) / ((hi - lo) / bin)) * .92, stacks = {};
+    const pos = trees.map(v => { const b = Math.round(v / bin); stacks[b] = (stacks[b] || 0) + 1; return [b, stacks[b]]; });
+    const tallest = Math.max(...Object.values(stacks)), H = 46 + tallest * d + 40, base = H - 40;
+    const shown = trees.slice(0, n), mean = shown.reduce((a, b) => a + b, 0) / n;
+    let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${n} tree guesses; average ${f1(mean)}">`;
+    for (let v = 0; v <= 10; v += 1) s += `<text x="${sx(v)}" y="${base + 18}" text-anchor="middle" font-size="11.5" fill="var(--muted)">${v}</text>`;
+    s += `<line x1="${L}" y1="${base}" x2="${W - Rr}" y2="${base}" stroke="var(--line-strong)"/><text x="${(W) / 2}" y="${base + 36}" text-anchor="middle" font-size="12" fill="var(--muted)">people guessed</text>`;
+    pos.forEach(([b, k], i) => { s += `<circle cx="${sx(b * bin)}" cy="${base - (k - .5) * d}" r="${d / 2 - .6}" fill="${i < n ? "var(--s1)" : "var(--line-strong)"}" fill-opacity="${i < n ? .9 : .25}"/>`; });
+    s += `<line x1="${sx(REAL)}" y1="18" x2="${sx(REAL)}" y2="${base}" stroke="var(--text)" stroke-width="1.5" stroke-dasharray="3 4"/><text x="${sx(REAL) - 6}" y="14" text-anchor="end" font-size="12" fill="var(--muted)">really: ${REAL}</text>`;
+    s += `<line x1="${sx(mean)}" y1="18" x2="${sx(mean)}" y2="${base}" stroke="var(--hi)" stroke-width="3"/><text x="${sx(mean) + 6}" y="14" font-size="12.5" font-weight="700" fill="var(--text)">average ${f1(mean)}</text>`;
+    el.innerHTML = s + "</svg>";
+    const lo2 = Math.min(...shown), hi2 = Math.max(...shown);
+    read.innerHTML = n === 1 ? `One tree on its own says <b>${f1(shown[0])} people</b>. Is that right? Hard to say: ask another tree and you'd get a different answer.`
+      : n === 10 ? `10 trees say anything from <b>${f1(lo2)}</b> to <b>${f1(hi2)}</b>. Their average is <b>${f1(mean)}</b>.`
+      : `All 200 trees range from <b>${f1(lo2)}</b> to <b>${f1(hi2)}</b>, but their average is a steady <b>${f1(mean)} people</b>. One tree's odd guess gets outvoted by the rest.`;
+  }
+  document.querySelectorAll("[data-n]").forEach(b => b.addEventListener("click", () => {
+    n = +b.dataset.n; b.parentElement.querySelectorAll("button").forEach(o => o.setAttribute("aria-pressed", o === b)); render();
+  }));
+  draw(render);
+})();
+
+// ------------------------------------------------ 6. boosting: the guess after each fix
+(function () {
+  const st = EM.xgb_steps, slider = $("steps"), out = $("stepsOut"), read = $("boostRead");
+  function render() {
+    const el = $("chartBoost"), W = widthOf(el), H = 220, L = 34, Rr = 14, T = 16, B = 30, k = +slider.value;
+    const lo = Math.floor(Math.min(...st, REAL) - .3), hi = Math.ceil(Math.max(...st, REAL) + .3);
+    const sx = i => L + (W - L - Rr) * i / (st.length - 1), sy = v => T + (H - T - B) * (1 - (v - lo) / (hi - lo));
+    let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="The guess rises from ${f1(st[0])} after 1 fix to ${f1(st[st.length - 1])} after ${st.length} fixes">`;
+    for (let v = lo; v <= hi; v += .5) s += `<line x1="${L}" y1="${sy(v)}" x2="${W - Rr}" y2="${sy(v)}" stroke="var(--line)"/><text x="${L - 6}" y="${sy(v) + 4}" text-anchor="end" font-size="11" fill="var(--muted)">${v % 1 ? "" : v}</text>`;
+    [1, 100, 200, 300].forEach(i => s += `<text x="${sx(i - 1)}" y="${H - 10}" text-anchor="middle" font-size="11" fill="var(--muted)">${i}</text>`);
+    s += `<line x1="${L}" y1="${sy(REAL)}" x2="${W - Rr}" y2="${sy(REAL)}" stroke="var(--text)" stroke-width="1.5" stroke-dasharray="3 4"/><text x="${W - Rr}" y="${sy(REAL) + 16}" text-anchor="end" font-size="12" fill="var(--muted)">what really happened: ${REAL}</text>`;
+    s += `<polyline points="${st.map((v, i) => `${sx(i)},${sy(v)}`).join(" ")}" fill="none" stroke="var(--s2)" stroke-opacity=".3" stroke-width="2.5"/>`;
+    s += `<polyline points="${st.slice(0, k).map((v, i) => `${sx(i)},${sy(v)}`).join(" ")}" fill="none" stroke="var(--s2)" stroke-width="3" stroke-linejoin="round"/>`;
+    s += `<circle cx="${sx(k - 1)}" cy="${sy(st[k - 1])}" r="7" fill="var(--hi)" stroke="var(--surface)" stroke-width="2.5"/>`;
+    el.innerHTML = s + "</svg>"; out.textContent = k;
+    read.innerHTML = k <= 5 ? `After ${k} fix${k > 1 ? "es" : ""}, it guesses <b>${st[k - 1].toFixed(2)} people</b>: still close to its rough starting point.`
+      : k < 300 ? `After ${k} fixes, it guesses <b>${st[k - 1].toFixed(2)} people</b>. Each fix nudges the guess a little.`
+      : `After all 300 fixes, its final guess is <b>${st[k - 1].toFixed(2)} people</b>. It learned that Saturday evenings for Legs run a bit busier than its first guess.`;
+  }
+  slider.addEventListener("input", render); draw(render);
+})();
+
+// ------------------------------------------------ 7. the team vote
+draw(function () {
+  const el = $("chartTeam"), W = widthOf(el), p = EM.preds, small = W < 480;
+  const rows = [["Guesser 2: 200 trees", p.random_forest, .45, "var(--s1)"], ["Guesser 3: step by step", p.xgboost, .45, "var(--s2)"], ["Guesser 1: straight line", p.linear, .10, "var(--s3)"]];
+  const L = small ? 0 : 190, top = small ? 22 : 6, rowH = 26, gap = small ? 34 : 12, maxV = 7, x1 = W - 120, sx = v => L + (x1 - L) * v / maxV;
+  let s = "", y = top;
+  rows.forEach(([n, v, w, c]) => {
+    if (small) s += `<text x="0" y="${y - 6}" font-size="12.5" font-weight="600" fill="var(--text)">${n}</text>`;
+    else s += `<text x="${L - 10}" y="${y + 18}" text-anchor="end" font-size="13.5" font-weight="600" fill="var(--text)">${n}</text>`;
+    s += `<rect x="${L}" y="${y}" width="${sx(v) - L}" height="${rowH}" rx="4" fill="${c}"/><text x="${sx(v) + 8}" y="${y + 18}" font-size="13.5" font-weight="700" fill="var(--text)">${v.toFixed(2)} <tspan font-weight="500" fill="var(--muted)">× ${w * 100}% say</tspan></text>`;
+    y += rowH + gap;
+  });
+  y += small ? 6 : 14;
+  if (small) s += `<text x="0" y="${y - 6}" font-size="12.5" font-weight="700" fill="var(--text)">The team's guess</text>`;
+  else s += `<text x="${L - 10}" y="${y + 22}" text-anchor="end" font-size="14" font-weight="800" fill="var(--text)">The team's guess</text>`;
+  let x = L;
+  rows.forEach(([n, v, w, c]) => { const part = v * w; s += `<g data-tip="${n}: ${v.toFixed(2)} × ${w * 100}% = ${part.toFixed(2)}"><rect x="${x}" y="${y}" width="${sx(part) - L - 1}" height="34" rx="4" fill="${c}"/></g>`; x += sx(part) - L; });
+  s += `<text x="${x + 8}" y="${y + 23}" font-size="16" font-weight="800" fill="var(--text)">= ${p.blend.toFixed(2)}</text>`;
+  s += `<line x1="${sx(REAL)}" y1="${y - 6}" x2="${sx(REAL)}" y2="${y + 40}" stroke="var(--text)" stroke-width="1.5" stroke-dasharray="3 4"/><text x="${sx(REAL)}" y="${y + 56}" text-anchor="middle" font-size="12" fill="var(--muted)">really: ${REAL}</text>`;
+  const H = y + 62;
+  el.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="200 trees ${p.random_forest.toFixed(2)}, step by step ${p.xgboost.toFixed(2)}, straight line ${p.linear.toFixed(2)}; team guess ${p.blend.toFixed(2)}">` + s + "</svg>"; tipify(el);
+  $("teamCap").innerHTML = `${(p.random_forest * .45).toFixed(2)} + ${(p.xgboost * .45).toFixed(2)} + ${(p.linear * .1).toFixed(2)} = <b>${p.blend.toFixed(2)} people</b>. What really happened: ${REAL}, so the team was off by ${Math.abs(p.blend - REAL).toFixed(1)}. <b>Hover</b> the bottom bar to see each piece.`;
+});
+
+// ------------------------------------------------ 8. the exam: split + three days
+draw(function () {
+  const el = $("chartSplit"), W = widthOf(el), H = 88, n = R.dataset.days, cut = R.groups.Legs.train_days, cw = (W - 2) / n;
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${n} days: first ${cut} to learn from, last ${n - cut} for the exam">`;
+  for (let i = 0; i < n; i++) { const test = i >= cut; s += `<rect x="${1 + i * cw + 1}" y="10" width="${cw - 3}" height="34" rx="4" fill="${test ? "var(--s2)" : "var(--s1)"}" fill-opacity="${test ? 1 : .8}"/>`; }
+  s += `<text x="${1 + cut / 2 * cw}" y="66" text-anchor="middle" font-size="13" font-weight="700" fill="var(--text)">Study: ${cut} days</text><text x="${W - 2}" y="66" text-anchor="end" font-size="13" font-weight="700" fill="var(--text)">Exam: ${n - cut} days</text>`;
+  s += `<text x="2" y="84" font-size="11" fill="var(--muted)">${R.dataset.start}</text><text x="${1 + cut * cw}" y="84" font-size="11" fill="var(--muted)">${R.dataset.end}</text>`;
+  el.innerHTML = s + "</svg>";
+});
+draw(function () {
+  const el = $("chartDays"), wk = R.example_week_legs;
+  const days = [...new Set(wk.map(d => d.date))], W = 680, H = 250, L = 30, T = 10, B = 40, gapD = 18;
+  const perDay = 33, plotW = W - L - 6 - gapD * (days.length - 1), bw = plotW / (perDay * days.length);
+  const maxY = Math.ceil(Math.max(...wk.map(d => Math.max(d.actual, d.pred))) / 2) * 2, sy = v => T + (H - T - B) * (1 - v / maxY);
+  const xOf = (di, slot) => L + di * (perDay * bw + gapD) + (slot - 12) * bw;
+  const dname = (d, o) => new Date(d + "T00:00").toLocaleDateString("en-GB", o);
+  let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Real and guessed Legs crowds for three exam days">`;
+  for (let v = 0; v <= maxY; v += 2) s += `<line x1="${L}" y1="${sy(v)}" x2="${W - 6}" y2="${sy(v)}" stroke="var(--line)"/><text x="${L - 6}" y="${sy(v) + 4}" text-anchor="end" font-size="11" fill="var(--muted)">${v}</text>`;
+  days.forEach((d, di) => {
+    const pts = [];
+    wk.filter(x => x.date === d).forEach(x => {
+      const X = xOf(di, x.slot);
+      s += `<g data-tip="${dname(d, { weekday: "short", day: "numeric", month: "short" })} ${slotTime(x.slot)} · really ${x.actual} · guessed ${f1(x.pred)}">
+        <rect x="${X}" y="${T}" width="${bw}" height="${H - T - B}" fill="transparent"/>
+        <rect x="${X + 1}" y="${sy(x.actual)}" width="${Math.max(bw - 2, 1)}" height="${sy(0) - sy(x.actual)}" rx="2" fill="var(--s1)"/></g>`;
+      pts.push(`${X + bw / 2},${sy(x.pred)}`);
+    });
+    s += `<polyline points="${pts.join(" ")}" fill="none" stroke="var(--text)" stroke-opacity=".6" stroke-width="2" stroke-linejoin="round" pointer-events="none"/>`;
+    s += `<text x="${xOf(di, 12) + perDay * bw / 2}" y="${H - 8}" text-anchor="middle" font-size="12" font-weight="600" fill="var(--text)">${dname(d, { weekday: "long", day: "numeric", month: "short" })}</text>`;
+    [16, 28, 40].forEach(sl => s += `<text x="${xOf(di, sl) + bw / 2}" y="${H - 24}" text-anchor="middle" font-size="10.5" fill="var(--muted)">${slotTime(sl)}</text>`);
+  });
+  el.innerHTML = `<div class="legend"><span><i style="background:var(--s1)"></i>What really happened</span><span><i class="line" style="background:var(--text);opacity:.6"></i>The app's guess</span></div><div class="sx">` + s + `</svg></div><p class="sx-hint">Swipe sideways to see all three days.</p>`;
+  tipify(el);
+});
+
+// ------------------------------------------------ 9. the score: waffle + compare
+(function () {
+  const w1 = Math.round(R.overall.within1 * 100), w2 = Math.round(R.overall.within2 * 100) - w1, rest = 100 - w1 - w2;
+  const parts = [[w1, "off by 1 person or less", "var(--good)"], [w2, "off by 1 to 2", "color-mix(in srgb, var(--good) 45%, var(--surface))"], [rest, "off by more than 2", "var(--neutral)"]];
+  $("waffleLegend").innerHTML = parts.map(([n, l, c]) => `<span><i style="background:${c}"></i><b style="color:var(--text)">${n}</b>&nbsp;${l}</span>`).join("");
+  $("waffle").innerHTML = parts.map(([n, l, c]) => `<i style="background:${c}" title="${l}"></i>`.repeat(n)).join("");
+  $("waffle").setAttribute("aria-label", parts.map(([n, l]) => `${n} ${l}`).join(", "));
+})();
+draw(function () {
+  const m = k => avg(g => g.models[k].mae);
+  const rows = [
+    { label: "The app (team)", v: avg(g => g.blend.mae), strong: true, k: 1 }, { label: "200 trees alone", v: m("Random Forest"), k: 1 },
+    { label: "Step by step alone", v: m("XGBoost"), k: 1 }, { label: "Straight line alone", v: m("Linear Regression"), k: 1 },
+    { label: "Rule: the usual", v: avg(g => g.lookup.mae), k: 2, tip: "The usual crowd for this weekday and time" }, { label: "Rule: same as last week", v: avg(g => g.last_week.mae), k: 2 },
+  ].map(r => ({ ...r, tip: `${r.tip || r.label}: off by ${r.v.toFixed(2)} people on average` }));
+  hbars($("chartCompare"), rows, { min: 0, max: 2.5, ticks: [0, .5, 1, 1.5, 2, 2.5], fmt: v => v.toFixed(2), labelW: 180, color: r => r.k === 1 ? "var(--s1)" : "var(--s2)", aria: "Average miss in people for the app, each guesser and two simple rules" });
+});
+
+// ------------------------------------------------ 10. does it help: 10 people
+(function () {
+  const rc = R.overall.recommend, raw = [rc.fewer, rc.same, rc.more].map(v => v * 10), cnt = raw.map(Math.floor);
+  raw.map((v, i) => [v - Math.floor(v), i]).sort((a, b) => b[0] - a[0]).slice(0, 10 - cnt.reduce((a, b) => a + b, 0)).forEach(([, i]) => cnt[i]++);
+  const kinds = [["quieter", "var(--good)"], ["about the same", "var(--neutral)"], ["busier", "var(--bad)"]];
+  const person = c => `<svg viewBox="0 0 46 64" aria-hidden="true"><circle cx="23" cy="14" r="10" fill="${c}"/><path d="M5 62 C5 38 12 28 23 28 C34 28 41 38 41 62 Z" fill="${c}"/></svg>`;
+  $("people").innerHTML = kinds.map(([, c], i) => person(c).repeat(cnt[i])).join("");
+  $("people").setAttribute("aria-label", kinds.map(([l], i) => `${cnt[i]} ${l}`).join(", "));
+  $("peopleLegend").innerHTML = kinds.map(([l, c], i) => `<span><i style="background:${c}"></i><b style="color:var(--text)">${cnt[i]}</b>&nbsp;${l}</span>`).join("");
+})();
+
+// ------------------------------------------------ 12. for the curious
+(function () {
+  $("hintTable").innerHTML = R.features.map(f => {
+    let v = EX[f]; v = Number.isInteger(v) ? v : (+v).toFixed(2);
+    if (f === "time_slot") v = `${EX[f]} (${slotTime(EX[f])})`;
+    if (f === "day_of_week") v = `${EX[f]} (Saturday)`;
+    return `<tr><td>${NAMES[f][0]}</td><td class="muted">${NAMES[f][1]}</td><td class="num">${v}</td></tr>`;
+  }).join("");
+  const order = [...groups].sort((a, b) => R.groups[b].blend.r2 - R.groups[a].blend.r2);
+  $("groupTable").innerHTML = `<thead><tr><th>Body group</th><th class="num">Usual crowd</th><th class="num">App: miss</th><th class="num">App: R²</th><th class="num">"The usual": miss</th><th class="num">"Last week": miss</th></tr></thead><tbody>` +
+    order.map(gn => { const g = R.groups[gn]; return `<tr><td>${gn}</td><td class="num">${g.mean_count.toFixed(1)}</td><td class="num"><b>${g.blend.mae.toFixed(1)}</b></td><td class="num">${g.blend.r2.toFixed(2)}</td><td class="num">${g.lookup.mae.toFixed(1)}</td><td class="num">${g.last_week.mae.toFixed(1)}</td></tr>`; }).join("") +
+    `<tr><td><b>Average</b></td><td class="num">${avg(g => g.mean_count).toFixed(1)}</td><td class="num"><b>${avg(g => g.blend.mae).toFixed(1)}</b></td><td class="num">${avg(g => g.blend.r2).toFixed(2)}</td><td class="num">${avg(g => g.lookup.mae).toFixed(1)}</td><td class="num">${avg(g => g.last_week.mae).toFixed(1)}</td></tr></tbody>`;
+})();
+draw(function () {
+  const ix = R.importance.xgboost, ir = R.importance.random_forest;
+  const rows = R.features.map(f => ({ f, v: (ix[f] + ir[f]) / 2 })).sort((a, b) => b.v - a.v).map(r => ({ label: NAMES[r.f][0], v: r.v, tip: `${NAMES[r.f][0]}: ${pct(r.v, 1)} of the attention` }));
+  hbars($("chartImportance"), rows, { min: 0, max: .25, ticks: [0, .05, .1, .15, .2, .25], fmt: v => pct(v, 1), tickFmt: t => pct(t), labelW: 170, aria: "How much each clue helped" });
+});
+draw(function () {
+  hbars($("chartLadder"), [
+    { label: "Original (inflated)", v: .906, tip: "0.906: the exam questions were in the study material" },
+    { label: "Tested properly", v: .780, tip: "0.780: study on earlier days, exam on later ones" },
+    { label: "Bugs fixed", v: .782, tip: "0.782: no clue sees the answer any more" },
+    { label: "Tuned team", v: .800, strong: true, tip: "0.800: the three guessers, tuned and combined" },
+    { label: "Best possible", v: .814, tip: "0.814: the best any model could do on that simulation" },
+  ], { min: 0, max: 1, fmt: v => v.toFixed(3), labelW: 150, color: (r, i) => i === 0 ? "var(--faint)" : i === 4 ? "var(--s3)" : "var(--s1)", aria: "Score history on the first simulation" });
+});
+</script>

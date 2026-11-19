@@ -1,0 +1,39 @@
+name: fit_forecaster
+description: Find the quietest time to train at the gym, near the time you want.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.6.0   # Flutter 3.27 or newer
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.2          # calls the Python forecast API
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/demo/forecasts.json   # a saved week of forecasts, used when the API is off
+    - assets/textures/             # chalk dust (dark) and ghost marks (light), tiled over the board
+
+  fonts:
+    # Optional: the app uses the phone's own font by default (see appFont in lib/theme/chalk.dart).
+    # Inter is bundled so you can switch to it in one line. (SIL Open Font License)
+    - family: Inter
+      fonts:
+        - asset: assets/fonts/Inter-Regular.ttf
+        - asset: assets/fonts/Inter-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Inter-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Inter-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Inter-ExtraBold.ttf
+          weight: 800
